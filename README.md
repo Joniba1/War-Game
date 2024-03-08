@@ -1,6 +1,6 @@
 # Turn-Based Combat Game
 
-In this turn-based combat game, each player commands an army (currently represented as rectangles) and deploys a desired number of troops to battle against the opponent's unknown forces (hopefully, as both players are using same page).
+In this turn-based combat game, each player commands an army (currently rectangles) and deploys a desired number of troops to battle against the opponent's unknown forces (hopefully, as both players are using same page).
 
 ## 
 
