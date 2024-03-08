@@ -173,9 +173,17 @@ function attack() {
           hasDefenderDied = true;
           battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
           battlingSoldiersP2 = battlingSoldiersP2.filter(soldier => soldier.health > 0);
+    
+          // Remove the soldier from the rendering array (armyP1 or armyP2)
+          if (defender === battlingSoldiersP1) {
+            armyP1.splice(armyP1.indexOf(soldier), 1);
+          } else {
+            armyP2.splice(armyP2.indexOf(soldier), 1);
+          }
         }
       }
     }
+    
 
     setTimeout(() => {
       defender.forEach(soldier => {
