@@ -11,11 +11,11 @@ class Soldier {
             },
             offset,
             width: 70,
-            height: 40
+            height: 30
         }
 
         this.health = 100;
-        this.isAttacking = true;
+        this.isAttacking = false;
 
     }
 
@@ -26,11 +26,11 @@ class Soldier {
         ctx.fillRect(this.position.x, this.position.y, 40, 60);
 
         //attackbox
-        // if (this.isAttacking) {
-        //     ctx.beginPath();
-        //     ctx.fillStyle = 'green';
-        //     ctx.fillRect(this.attackbox.position.x, this.attackbox.position.y, this.attackbox.width, this.attackbox.height);
-        // }
+        if (this.isAttacking) {
+            ctx.beginPath();
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(this.attackbox.position.x, this.attackbox.position.y, this.attackbox.width, this.attackbox.height);
+        }
     }
 
     update(targetX, targetY) {

@@ -105,6 +105,41 @@ function toggleBattle() {
 }
 
 
+// function battleFirstMovement() {
+//   spacing = 65;
+//   if (!firstArrival) {
+//     console.log(firstArrival);
+//     // Battling troops movement
+//     for (let i = troopsAddedP1; i <= armyP1.length - troopsAddedP1 - 1; i++) {
+//       troopsAddedP1++;
+//       soldier = armyP1[troopsAddedP1];
+//       soldier.update(canvas.width / 2 + spacing, soldier.position.y);
+//       battlingSoldiersP1.push(soldier);
+//     }
+
+//     troopsAddedP1 = troopsAddedP1save;
+//     for (let i = troopsAddedP2; i <= armyP2.length - troopsAddedP2 - 1; i++) {
+//       troopsAddedP2++;
+//       soldier = armyP2[troopsAddedP2];
+//       soldier.update(canvas.width / 2 - spacing, soldier.position.y);
+//       battlingSoldiersP2.push(soldier);
+//     }
+
+//     troopsAddedP2 = troopsAddedP2save;
+
+
+//     //Checks if the soldiers have reached their destination. Not efficient nor clean, change
+//     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) {
+//       //   setTimeout(() => { // Introduce a delay here
+//       firstArrival = true;
+
+//     }
+
+
+//   }
+// }
+
+
 function battleFirstMovement() {
   spacing = 65;
   if (!firstArrival) {
@@ -127,123 +162,142 @@ function battleFirstMovement() {
 
     troopsAddedP2 = troopsAddedP2save;
 
-
-    //Checks if the soldiers have reached their destination. Not efficient nor clean, change
     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) {
-      setTimeout(() => { // Introduce a delay here
-        firstArrival = true;
-        battle();
-      }, 200); //Determines how long after the soldier has reached the battlground it starts to attack
+      firstArrival = true;
+      attack();
     }
-
-
   }
 }
 
-
-function battle() {
-  // Assign attacking and defending armies based on the turn
-  if (player1Turn) {
-    attackingArmy = battlingSoldiersP1;
-    defendingArmy = battlingSoldiersP2;
-  } else {
-    attackingArmy = battlingSoldiersP2;
-    defendingArmy = battlingSoldiersP1;
-  }
-
-  // Iterate through each attacker and initiate attack
-  //for (let i = 0; i < attackingArmy.length; i++) {
-  let attacker = attackingArmy[2];
-  let defender = defendingArmy[2];
-
-  // Move attacker forward and initiate attack
-  moveForward(attacker, 1015 - 120, () => {
-    setTimeout(() => {
-      // Check if the defender's health is still positive before inflicting damage
-      if (defender.health > 0) {
-        // Inflict damage to the defender
-        defender.health -= 20;
-        console.log(defender.health);
-
-        // Check if defender is defeated
-        if (defender.health <= 0) {
-          console.log(`a soldier has been defeated!`);
-        }
-      }
-
-      // Move attacker back to original position
-      moveBack(attacker, 1015, () => {
-        // Check if all attackers have attacked
-        //if (i === attackingArmy.length - 1) {
-        // Advance to the next turn
-        // if (attacker.position.x == 1015) {
-        //   nextTurn();
-        // }
-        player1Turn = !player1Turn;
-        setTimeout(() => {
-          battle();
-        }, 2000);
-      });
-    }, 500);
+function attack() {
+  battlingSoldiersP1.forEach(soldier => {
+    soldier.isAttacking = true;
   });
-}
 
-
-function moveForward(soldier, targetX, callback) {
-  let startX = soldier.position.x;
-  let startTime = Date.now();
-
-  function move() {
-    let timePassed = Date.now() - startTime;
-    let progress = timePassed / attackDuration;
-
-    if (progress > 1) {
-      progress = 1;
-    }
-
-    let newX = startX + (targetX - startX) * progress;
-    soldier.update(newX, soldier.position.y);
-
-    if (progress < 1) {
-      requestAnimationFrame(move);
-    } else {
-      if (typeof callback === 'function') {
-        callback();
+  setTimeout(() => {
+    battlingSoldiersP1.forEach(soldier => {
+      soldier.isAttacking = false;
+    });
+    battlingSoldiersP2.forEach(soldier => {
+      soldier.isAttacking = true;
+    });
+    setTimeout(() => {
+      battlingSoldiersP2.forEach(soldier => {
+        soldier.isAttacking = false;
+      });
+      if(battlingSoldiersP1[0].health > 0 || battlingSoldiersP2[0].health > 0) {
+        attack(); 
       }
-    }
-  }
-
-  move();
+    }, 1000);  
+  }, 1000); 
 }
+ 
 
 
-function moveBack(soldier, initialX, callback) {
-  let targetX = initialX;
-  let startX = soldier.position.x;
-  let startTime = Date.now();
 
-  function move() {
-    let timePassed = Date.now() - startTime;
-    let progress = timePassed / attackDuration;
+// function battle() {
+//   // Assign attacking and defending armies based on the turn
+//   if (player1Turn) {
+//     attackingArmy = battlingSoldiersP1;
+//     defendingArmy = battlingSoldiersP2;
+//   } else {
+//     attackingArmy = battlingSoldiersP2;
+//     defendingArmy = battlingSoldiersP1;
+//   }
 
-    if (progress > 1) {
-      progress = 1;
-    }
+//   // Iterate through each attacker and initiate attack
+//   //for (let i = 0; i < attackingArmy.length; i++) {
+//   let attacker = attackingArmy[2];
+//   let defender = defendingArmy[2];
 
-    let newX = startX + (targetX - startX) * progress;
-    soldier.update(newX, soldier.position.y);
+//   // Move attacker forward and initiate attack
+//   moveForward(attacker, 1015 - 120, () => {
+//     setTimeout(() => {
+//       // Check if the defender's health is still positive before inflicting damage
+//       if (defender.health > 0) {
+//         // Inflict damage to the defender
+//         defender.health -= 20;
+//         console.log(defender.health);
 
-    if (progress < 1) {
-      requestAnimationFrame(move);
-    } else {
-      if (typeof callback === 'function') {
-        callback();
-      }
-    }
-  }
+//         // Check if defender is defeated
+//         if (defender.health <= 0) {
+//           console.log(`a soldier has been defeated!`);
+//         }
+//       }
 
-  move();
-}
+//       // Move attacker back to original position
+//       moveBack(attacker, 1015, () => {
+//         // Check if all attackers have attacked
+//         //if (i === attackingArmy.length - 1) {
+//         // Advance to the next turn
+//         // if (attacker.position.x == 1015) {
+//         //   nextTurn();
+//         // }
+//         player1Turn = !player1Turn;
+//         setTimeout(() => {
+//           battle();
+//         }, 2000);
+//       });
+//     }, 500);
+//   });
+// }
+
+
+// function moveForward(soldier, targetX, callback) {
+//   let startX = soldier.position.x;
+//   let startTime = Date.now();
+
+//   function move() {
+//     let timePassed = Date.now() - startTime;
+//     let progress = timePassed / attackDuration;
+
+//     if (progress > 1) {
+//       progress = 1;
+//     }
+
+//     let newX = startX + (targetX - startX) * progress;
+//     soldier.update(newX, soldier.position.y);
+
+//     if (progress < 1) {
+//       requestAnimationFrame(move);
+//     } else {
+//       if (typeof callback === 'function') {
+//         callback();
+//       }
+//     }
+//   }
+
+//   move();
+// }
+
+
+// function moveBack(soldier, initialX, callback) {
+//   let targetX = initialX;
+//   let startX = soldier.position.x;
+//   let startTime = Date.now();
+
+//   function move() {
+//     let timePassed = Date.now() - startTime;
+//     let progress = timePassed / attackDuration;
+
+//     if (progress > 1) {
+//       progress = 1;
+//     }
+
+//     let newX = startX + (targetX - startX) * progress;
+//     soldier.update(newX, soldier.position.y);
+
+//     if (progress < 1) {
+//       requestAnimationFrame(move);
+//     } else {
+//       if (typeof callback === 'function') {
+//         callback();
+//       }
+//     }
+//   }
+
+//   move();
+// }
 
 
 function nextTurn() {
