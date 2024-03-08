@@ -1,5 +1,7 @@
 class Soldier {
-    constructor({ position, velocity, offset }) {
+    constructor(index, { position, velocity, offset }) {
+        this.index = index;
+
         this.position = position;
         this.velocity = velocity;
 

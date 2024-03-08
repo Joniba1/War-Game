@@ -16,7 +16,7 @@ function initializeArmies() {
   let posY = canvas.height - 850;
 
   for (let i = 0; i < armySize; i++) {
-    let soldier = new Soldier({
+    let soldier = new Soldier(i, {
       position: { x: canvas.width - 70, y: posY },
       velocity: { x: 4, y: 4 },
       offset: {
@@ -26,7 +26,7 @@ function initializeArmies() {
     });
     armyP1.push(soldier);
     soldier.update(soldier.position.x, soldier.position.y)
-    soldier = new Soldier({
+    soldier = new Soldier(i, {
       position: { x: 40, y: posY },
       velocity: { x: 4, y: 4 },
       offset: {
@@ -82,8 +82,6 @@ function animate() {
   }
 
   window.requestAnimationFrame(animate);
-
-
 }
 
 
@@ -105,39 +103,6 @@ function toggleBattle() {
 }
 
 
-// function battleFirstMovement() {
-//   spacing = 65;
-//   if (!firstArrival) {
-//     console.log(firstArrival);
-//     // Battling troops movement
-//     for (let i = troopsAddedP1; i <= armyP1.length - troopsAddedP1 - 1; i++) {
-//       troopsAddedP1++;
-//       soldier = armyP1[troopsAddedP1];
-//       soldier.update(canvas.width / 2 + spacing, soldier.position.y);
-//       battlingSoldiersP1.push(soldier);
-//     }
-
-//     troopsAddedP1 = troopsAddedP1save;
-//     for (let i = troopsAddedP2; i <= armyP2.length - troopsAddedP2 - 1; i++) {
-//       troopsAddedP2++;
-//       soldier = armyP2[troopsAddedP2];
-//       soldier.update(canvas.width / 2 - spacing, soldier.position.y);
-//       battlingSoldiersP2.push(soldier);
-//     }
-
-//     troopsAddedP2 = troopsAddedP2save;
-
-
-//     //Checks if the soldiers have reached their destination. Not efficient nor clean, change
-//     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) {
-//       //   setTimeout(() => { // Introduce a delay here
-//       firstArrival = true;
-
-//     }
-
-
-//   }
-// }
 
 
 function battleFirstMovement() {
@@ -164,34 +129,72 @@ function battleFirstMovement() {
 
     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) {
       firstArrival = true;
+      //here
       attack();
     }
   }
 }
 
+
+let currentPlayerIndex = 0;
+let defender;
+
 function attack() {
-  battlingSoldiersP1.forEach(soldier => {
-    soldier.isAttacking = true;
-  });
+  //Turn
+  let currentPlayer;
+  if (currentPlayerIndex % 2 === 0) {
+    currentPlayer = battlingSoldiersP1;
+    defender = battlingSoldiersP2;
+  } else {
+    currentPlayer = battlingSoldiersP2;
+    defender = battlingSoldiersP1;
+  }
+
+  for (let i = 0; i < currentPlayer.length; i++) {
+    currentPlayer[i].isAttacking = true;
+  }
 
   setTimeout(() => {
-    battlingSoldiersP1.forEach(soldier => {
+    currentPlayer.forEach(soldier => {
       soldier.isAttacking = false;
     });
-    battlingSoldiersP2.forEach(soldier => {
-      soldier.isAttacking = true;
-    });
-    setTimeout(() => {
-      battlingSoldiersP2.forEach(soldier => {
-        soldier.isAttacking = false;
-      });
-      if(battlingSoldiersP1[0].health > 0 || battlingSoldiersP2[0].health > 0) {
-        attack(); 
+
+    let hasDefenderDied = false; // Flag to check if any defender has died
+
+    for (let i = defender.length - 1; i >= 0; i--) {
+      const soldier = defender[i];
+      if (!soldier.hasTakenDamageThisRound && soldier.health > 0) {
+        const damage = Math.floor(Math.random() * (60 - 10 + 1)) + 10;
+        soldier.health -= damage;
+        soldier.hasTakenDamageThisRound = true;
+        console.log(soldier.health);
+        if (soldier.health <= 0) {
+          console.log("soldier: ", soldier.index, " has died");
+          hasDefenderDied = true;
+          battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
+          battlingSoldiersP2 = battlingSoldiersP2.filter(soldier => soldier.health > 0);
+        }
       }
-    }, 1000);  
-  }, 1000); 
+    }
+
+    setTimeout(() => {
+      defender.forEach(soldier => {
+        soldier.isAttacking = false;
+        soldier.hasTakenDamageThisRound = false; // Reset the flag for the next attack round
+      });
+
+      if (battlingSoldiersP1.length > 0 && battlingSoldiersP2.length > 0) {
+        currentPlayerIndex++; // Switch to the other player
+        attack();
+      }
+    }, 500);
+  }, 500);
 }
- 
+
+
+
+
+
 
 
 
@@ -300,24 +303,15 @@ function attack() {
 // }
 
 
-function nextTurn() {
-  if (player1Turn) {
-    currentAttackerIndex++;
-  } else {
-    currentDefenderIndex++;
-  }
+// function nextTurn() {
+//   if (player1Turn) {
+//     currentAttackerIndex++;
+//   } else {
+//     currentDefenderIndex++;
+//   }
 
-  // if (currentAttackerIndex >= attackingArmy.length) {
-  //   currentAttackerIndex = 0;
-  //   isPlayer1Turn = !isPlayer1Turn;
-  // }
-
-  // if (currentDefenderIndex >= defendingArmy.length) {
-  //   currentDefenderIndex = 0;
-  // }
-
-  battle();
-}
+//   battle();
+// }
 
 
 animate();       
