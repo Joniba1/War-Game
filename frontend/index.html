@@ -14,7 +14,43 @@
 <body>
 
 
-  <canvas id="canvas" width="1900" height="900" style="border: 1px solid black;"></canvas>
+  <div style="position: relative;"> <!-- Red container div -->
+    <!-- Smaller red container div -->
+    <div style="position: absolute; 
+                display: flex; 
+                top: 0; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                align-items: center;">
+
+      <!-- Player 1 health -->
+      <div style="background-color: yellow; 
+                  height: 30px;
+                  width: 700px;">
+      </div>
+      <!-- Player 2 health -->
+      <div style="background-color: red;
+                  height: 100px; 
+                  width: 100px;">
+      </div>
+
+
+      <div style="background-color: yellow; 
+                  height: 30px; 
+                  width: 700px;">
+      </div>
+
+    </div> 
+
+    <!-- Canvas -->
+    <canvas id="canvas" width="1900" height="900" style="border: 1px solid black;"></canvas>
+  </div> 
+
+
+
+
+
+
   <button class="addTroopP1" onclick="addTroop(1)">addTroop1</button>
   <button class="addTroopP2" onclick="addTroop(2)">addTroop2</button>
   <button class="battle" onclick="toggleBattle()">Battle!</button>

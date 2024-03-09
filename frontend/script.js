@@ -5,7 +5,7 @@ let armyP1 = [];
 let armyP2 = [];
 
 let spacing = 100;
-let armySize = 3;
+let armySize = 5;
 let firstArrival = false;
 
 initializeArmies();
@@ -13,7 +13,7 @@ initializeArmies();
 
 function initializeArmies() {
 
-  let posY = canvas.height - 850;
+  let posY = canvas.height - 770; //armies initial y position
 
   for (let i = 0; i < armySize; i++) {
     let soldier = new Soldier(i, {
@@ -41,11 +41,8 @@ function initializeArmies() {
 
 }
 
-let troopsAddedP1 = armyP1.length - 1;
-let troopsAddedP2 = armyP2.length - 1;
-
-let troopsAddedP1save;
-let troopsAddedP2save;
+let troopsAddedP1 = 0;
+let troopsAddedP2 = 0;
 
 let battlingSoldiersP1 = [];
 let battlingSoldiersP2 = [];
@@ -60,14 +57,12 @@ function addTroop(playerIndex) {
   if (playerIndex === 1) {
     armyP1[troopsAddedP1].position.x = canvas.width - canvas.width / 3;
     armyP1[troopsAddedP1].update(armyP1[troopsAddedP1].position.x, armyP1[troopsAddedP1].position.y) //in order for the attack box to follow 
-    troopsAddedP1--;
-    troopsAddedP1save = troopsAddedP1;
+    troopsAddedP1++;
   }
   else if (playerIndex === 2) {
     armyP2[troopsAddedP2].position.x = canvas.width / 3;
     armyP2[troopsAddedP2].update(armyP2[troopsAddedP2].position.x, armyP2[troopsAddedP2].position.y)
-    troopsAddedP2--;
-    troopsAddedP2save = troopsAddedP2;
+    troopsAddedP2++;
 
   }
 }
@@ -110,97 +105,145 @@ function battleFirstMovement() {
   if (!firstArrival) {
     console.log(firstArrival);
     // Battling troops movement
-    for (let i = troopsAddedP1; i <= armyP1.length - troopsAddedP1 - 1; i++) {
-      troopsAddedP1++;
-      soldier = armyP1[troopsAddedP1];
+    for (let i = 0; i < troopsAddedP1; i++) {
+      soldier = armyP1[i];
       soldier.update(canvas.width / 2 + spacing, soldier.position.y);
       battlingSoldiersP1.push(soldier);
     }
 
-    troopsAddedP1 = troopsAddedP1save;
-    for (let i = troopsAddedP2; i <= armyP2.length - troopsAddedP2 - 1; i++) {
-      troopsAddedP2++;
-      soldier = armyP2[troopsAddedP2];
+
+    for (let i = 0; i < troopsAddedP2; i++) {
+      soldier = armyP2[i];
       soldier.update(canvas.width / 2 - spacing, soldier.position.y);
       battlingSoldiersP2.push(soldier);
     }
 
-    troopsAddedP2 = troopsAddedP2save;
 
     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) {
       firstArrival = true;
-      //here
       attack();
     }
   }
 }
 
 
-let currentPlayerIndex = 0;
-let defender;
+let attackerIndex = 0;
 
 function attack() {
-  //Turn
-  let currentPlayer;
-  if (currentPlayerIndex % 2 === 0) {
-    currentPlayer = battlingSoldiersP1;
+  // Turn
+  let attacker;
+  let defender;
+  if (attackerIndex % 2 === 0) {
+    attacker = battlingSoldiersP1;
     defender = battlingSoldiersP2;
   } else {
-    currentPlayer = battlingSoldiersP2;
+    attacker = battlingSoldiersP2;
     defender = battlingSoldiersP1;
   }
 
-  for (let i = 0; i < currentPlayer.length; i++) {
-    currentPlayer[i].isAttacking = true;
-  }
 
-  setTimeout(() => {
-    currentPlayer.forEach(soldier => {
-      soldier.isAttacking = false;
-    });
 
-    let hasDefenderDied = false; // Flag to check if any defender has died
-
-    for (let i = defender.length - 1; i >= 0; i--) {
-      const soldier = defender[i];
-      if (!soldier.hasTakenDamageThisRound && soldier.health > 0) {
-        const damage = Math.floor(Math.random() * (60 - 10 + 1)) + 10;
-        soldier.health -= damage;
-        soldier.hasTakenDamageThisRound = true;
-        console.log(soldier.health);
-        if (soldier.health <= 0) {
-          console.log("soldier: ", soldier.index, " has died");
-          hasDefenderDied = true;
+  for (let i = 0; i < attacker.length; i++) {
+    attacker[i].isAttacking = true; // Set attacker to true first
+    // Apply damage
+    for (let j = 0; j < defender.length; j++) {
+      const opponent = defender[j];
+      //if (opponent === undefined) continue; // Skip if opponent is not in battle
+      if (!opponent.hasTakenDamageThisRound && !isDead(opponent)) {
+        const damage = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
+        opponent.health -= damage;
+        opponent.hasTakenDamageThisRound = true;
+        console.log("Opponent health:", opponent.health);
+        if (isDead(opponent)) {
+          console.log("Soldier: ", opponent.index, " has died");
           battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
           battlingSoldiersP2 = battlingSoldiersP2.filter(soldier => soldier.health > 0);
-    
+
           // Remove the soldier from the rendering array (armyP1 or armyP2)
           if (defender === battlingSoldiersP1) {
-            armyP1.splice(armyP1.indexOf(soldier), 1);
+            armyP1.splice(armyP1.indexOf(opponent), 1);
           } else {
-            armyP2.splice(armyP2.indexOf(soldier), 1);
+            armyP2.splice(armyP2.indexOf(opponent), 1);
           }
         }
+        //break; // Exit the loop after applying damage to one opponent
       }
     }
-    
+  }
+
+
+  setTimeout(() => {
+    attacker.forEach(soldier => {
+      soldier.isAttacking = false;
+    });
 
     setTimeout(() => {
       defender.forEach(soldier => {
         soldier.isAttacking = false;
-        soldier.hasTakenDamageThisRound = false; // Reset the flag for the next attack round
+        soldier.hasTakenDamageThisRound = false;
       });
 
       if (battlingSoldiersP1.length > 0 && battlingSoldiersP2.length > 0) {
-        currentPlayerIndex++; // Switch to the other player
+        attackerIndex++; // Switch to the other player
         attack();
       }
     }, 500);
   }, 500);
 }
 
+function isDead(soldier) {
+  if (soldier.health > 0) {
+    return false;
+  }
+  return true;
+}
 
 
+
+// function attack() {
+//   // Turn
+//   let attacker;
+//   if (attackerIndex % 2 === 0) {
+//     attacker = battlingSoldiersP1;
+//     defender = battlingSoldiersP2;
+//   } else {
+//     attacker = battlingSoldiersP2;
+//     defender = battlingSoldiersP1;
+//   }
+
+//   // Iterate through both sets of soldiers simultaneously
+//   for (let i = 0; i < attacker.length; i++) {
+//     const attacker = attacker[i];
+//     const opponent = defender[i];
+//     if (opponent && opponent.health > 0) { // Check if opponent exists and is alive
+//       attacker.isAttacking = true;
+//       setTimeout(() => {
+//         attacker.isAttacking = false;
+//         const damage = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+//         opponent.health -= damage;
+//         console.log(opponent.health);
+//         if (opponent.health <= 0) {
+//           console.log("Soldier: ", opponent.index, " has died");
+//           // Remove the dead soldier from the arrays
+//           defender.splice(i, 1);
+//           attacker.splice(i, 1);
+//           if (defender === battlingSoldiersP1) {
+//             armyP1.splice(armyP1.indexOf(opponent), 1);
+//           } else {
+//             armyP2.splice(armyP2.indexOf(opponent), 1);
+//           }
+//         }
+//       }, 500);
+//     }
+//   }
+
+//   setTimeout(() => {
+//     if (battlingSoldiersP1.length > 0 && battlingSoldiersP2.length > 0) {
+//       attackerIndex++; // Switch to the other player
+//       attack();
+//     }
+//   }, 500);
+// }
 
 
 
@@ -322,4 +365,4 @@ function attack() {
 // }
 
 
-animate();       
+animate();     
