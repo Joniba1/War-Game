@@ -58,7 +58,7 @@ let battleInProgress = false;
 
 
 function addTroop(playerIndex) {
-  
+
   if (playerIndex === 1) {
     soldier = armyP1[troopsAddedP1];
     soldier.position.x = canvas.width - canvas.width / 3;
@@ -166,7 +166,7 @@ function attack() {
       //if (opponent === undefined) continue; // Skip if opponent is not in battle
       if (opponent && !opponent.hasTakenDamageThisRound && !isDead(opponent)) {
         const damage = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
-        opponent.health -= damage;     
+        opponent.health -= damage;
         opponent.hasTakenDamageThisRound = true;
 
         //log debug
@@ -178,20 +178,24 @@ function attack() {
           console.log("P1: ", j, " health:", opponent.health);
           healthBarP2.value -= damage;
 
-
         }
-        
+
         if (isDead(opponent)) {
           console.log("Soldier: ", opponent.index, " has died");
-          battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
-          battlingSoldiersP2 = battlingSoldiersP2.filter(soldier => soldier.health > 0);
 
           // Remove the soldier from the rendering array (armyP1 or armyP2)
           if (defender === battlingSoldiersP1) {
+            console.log("P1 spliced");
             armyP1.splice(armyP1.indexOf(opponent), 1);
           } else {
+            console.log("P2 spliced");
             armyP2.splice(armyP2.indexOf(opponent), 1);
           }
+
+          battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
+          battlingSoldiersP2 = battlingSoldiersP2.filter(soldier => soldier.health > 0);
+
+
         }
         //break; // Exit the loop after applying damage to one opponent
       }
@@ -219,63 +223,12 @@ function attack() {
 }
 
 
-
 function isDead(soldier) {
   if (soldier.health > 0) {
     return false;
   }
   return true;
 }
-
-
-
-// function attack() {
-//   // Turn
-//   let attacker;
-//   if (attackerIndex % 2 === 0) {
-//     attacker = battlingSoldiersP1;
-//     defender = battlingSoldiersP2;
-//   } else {
-//     attacker = battlingSoldiersP2;
-//     defender = battlingSoldiersP1;
-//   }
-
-//   // Iterate through both sets of soldiers simultaneously
-//   for (let i = 0; i < attacker.length; i++) {
-//     const attacker = attacker[i];
-//     const opponent = defender[i];
-//     if (opponent && opponent.health > 0) { // Check if opponent exists and is alive
-//       attacker.isAttacking = true;
-//       setTimeout(() => {
-//         attacker.isAttacking = false;
-//         const damage = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
-//         opponent.health -= damage;
-//         console.log(opponent.health);
-//         if (opponent.health <= 0) {
-//           console.log("Soldier: ", opponent.index, " has died");
-//           // Remove the dead soldier from the arrays
-//           defender.splice(i, 1);
-//           attacker.splice(i, 1);
-//           if (defender === battlingSoldiersP1) {
-//             armyP1.splice(armyP1.indexOf(opponent), 1);
-//           } else {
-//             armyP2.splice(armyP2.indexOf(opponent), 1);
-//           }
-//         }
-//       }, 500);
-//     }
-//   }
-
-//   setTimeout(() => {
-//     if (battlingSoldiersP1.length > 0 && battlingSoldiersP2.length > 0) {
-//       attackerIndex++; // Switch to the other player
-//       attack();
-//     }
-//   }, 500);
-// }
-
-
-
 
 
 // function battle() {
@@ -383,15 +336,6 @@ function isDead(soldier) {
 // }
 
 
-// function nextTurn() {
-//   if (player1Turn) {
-//     currentAttackerIndex++;
-//   } else {
-//     currentDefenderIndex++;
-//   }
-
-//   battle();
-// }
 
 
 animate();     
