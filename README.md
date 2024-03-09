@@ -12,3 +12,5 @@ I have numerous general ideas for the core mechanics of the game.
 
 While I haven't gotten around to implementing animations and textures just yet, I plan to add them eventually to make the game more interactive.
 
+ 
+Ik the directories are wrong, ill change them eventually
