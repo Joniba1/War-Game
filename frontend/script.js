@@ -5,40 +5,44 @@ let armyP1 = [];
 let armyP2 = [];
 
 let spacing = 100;
-let armySize = 5;
+let armySize = 6;
 let firstArrival = false;
+
+let healthP1 = 0;
+let healthP2 = 0;
+
+let healthBarP1 = document.getElementById("healthBarP1");
+let healthBarP2 = document.getElementById("healthBarP2");
+
 
 initializeArmies();
 
 
-function initializeArmies() {
 
+
+function initializeArmies() {
   let posY = canvas.height - 770; //armies initial y position
 
   for (let i = 0; i < armySize; i++) {
-    let soldier = new Soldier(i, {
+    // Create soldier for armyP1
+    let soldierP1 = new Soldier(i, {
       position: { x: canvas.width - 70, y: posY },
       velocity: { x: 4, y: 4 },
-      offset: {
-        x: -30,
-        y: 0
-      }
+      offset: { x: -30, y: 0 }
     });
-    armyP1.push(soldier);
-    soldier.update(soldier.position.x, soldier.position.y)
-    soldier = new Soldier(i, {
+    armyP1.push(soldierP1);
+
+    // Create soldier for armyP2
+    let soldierP2 = new Soldier(i, {
       position: { x: 40, y: posY },
       velocity: { x: 4, y: 4 },
-      offset: {
-        x: 0,
-        y: 0
-      }
+      offset: { x: 0, y: 0 }
     });
-    armyP2.push(soldier);
+    armyP2.push(soldierP2);
+
+    // Increment posY for next soldier
     posY += spacing;
-
   }
-
 }
 
 let troopsAddedP1 = 0;
@@ -50,21 +54,32 @@ let battlingSoldiersP2 = [];
 let attackDuration = 100;
 let battleInProgress = false;
 
-let player1Turn = true;
+// let player1Turn = true;
 
 
 function addTroop(playerIndex) {
+  
   if (playerIndex === 1) {
-    armyP1[troopsAddedP1].position.x = canvas.width - canvas.width / 3;
-    armyP1[troopsAddedP1].update(armyP1[troopsAddedP1].position.x, armyP1[troopsAddedP1].position.y) //in order for the attack box to follow 
+    soldier = armyP1[troopsAddedP1];
+    soldier.position.x = canvas.width - canvas.width / 3;
+    soldier.update(armyP1[troopsAddedP1].position.x, soldier.position.y) //in order for the attack box to follow 
     troopsAddedP1++;
+
+    healthP1 += soldier.health;
   }
   else if (playerIndex === 2) {
-    armyP2[troopsAddedP2].position.x = canvas.width / 3;
-    armyP2[troopsAddedP2].update(armyP2[troopsAddedP2].position.x, armyP2[troopsAddedP2].position.y)
+    soldier = armyP2[troopsAddedP2];
+    soldier.position.x = canvas.width / 3;
+    soldier.update(soldier.position.x, soldier.position.y)
     troopsAddedP2++;
-
+    healthP2 += soldier.health;
   }
+
+  healthBarP1.max = healthP1;
+  healthBarP1.value = healthP1;
+
+  healthBarP2.max = healthP1;
+  healthBarP2.value = healthP1;
 }
 
 
@@ -96,8 +111,6 @@ function toggleBattle() {
   battleInProgress = true; // Set flag to indicate battle in progress
 
 }
-
-
 
 
 function battleFirstMovement() {
@@ -133,6 +146,7 @@ function attack() {
   // Turn
   let attacker;
   let defender;
+
   if (attackerIndex % 2 === 0) {
     attacker = battlingSoldiersP1;
     defender = battlingSoldiersP2;
@@ -141,19 +155,32 @@ function attack() {
     defender = battlingSoldiersP1;
   }
 
+  let length = Math.min(troopsAddedP1, troopsAddedP2);
 
+  for (let i = 0; i < length; i++) {
 
-  for (let i = 0; i < attacker.length; i++) {
-    attacker[i].isAttacking = true; // Set attacker to true first
+    attacker[i].isAttacking = true; //isAttacking controls the attack box rendering.
     // Apply damage
-    for (let j = 0; j < defender.length; j++) {
+    for (let j = 0; j < length; j++) {
       const opponent = defender[j];
       //if (opponent === undefined) continue; // Skip if opponent is not in battle
-      if (!opponent.hasTakenDamageThisRound && !isDead(opponent)) {
+      if (opponent && !opponent.hasTakenDamageThisRound && !isDead(opponent)) {
         const damage = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
-        opponent.health -= damage;
+        opponent.health -= damage;     
         opponent.hasTakenDamageThisRound = true;
-        console.log("Opponent health:", opponent.health);
+
+        //log debug
+        if (attackerIndex % 2 == 0) {
+          console.log("P2: ", j, " health:", opponent.health);
+          healthBarP1.value -= damage;
+
+        } else {
+          console.log("P1: ", j, " health:", opponent.health);
+          healthBarP2.value -= damage;
+
+
+        }
+        
         if (isDead(opponent)) {
           console.log("Soldier: ", opponent.index, " has died");
           battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
@@ -190,6 +217,8 @@ function attack() {
     }, 500);
   }, 500);
 }
+
+
 
 function isDead(soldier) {
   if (soldier.health > 0) {

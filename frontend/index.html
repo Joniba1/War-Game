@@ -14,8 +14,8 @@
 <body>
 
 
-  <div style="position: relative;"> <!-- Red container div -->
-    <!-- Smaller red container div -->
+  <!-- <div style="position: relative;">  Red container div 
+  Smaller red container div 
     <div style="position: absolute; 
                 display: flex; 
                 top: 0; 
@@ -23,41 +23,40 @@
                 transform: translateX(-50%); 
                 align-items: center;">
 
-      <!-- Player 1 health -->
-      <div style="background-color: yellow; 
+       Player 1 health 
+      <div id=player2health style="background-color: yellow; 
                   height: 30px;
                   width: 700px;">
       </div>
-      <!-- Player 2 health -->
+
+       Player 2 health
+      <div id=player2health style="background-color: yellow; 
+                  height: 30px; 
+                  width: 700px;">
+      </div>
+
+    some box 
       <div style="background-color: red;
                   height: 100px; 
                   width: 100px;">
       </div>
 
-
-      <div style="background-color: yellow; 
-                  height: 30px; 
-                  width: 700px;">
-      </div>
-
-    </div> 
-
-    <!-- Canvas -->
-    <canvas id="canvas" width="1900" height="900" style="border: 1px solid black;"></canvas>
-  </div> 
+    </div>
+  -->
 
 
-
-
-
+  <!-- Canvas -->
+  <canvas id="canvas" width="1900" height="900" style="border: 1px solid black;"></canvas>
 
   <button class="addTroopP1" onclick="addTroop(1)">addTroop1</button>
   <button class="addTroopP2" onclick="addTroop(2)">addTroop2</button>
   <button class="battle" onclick="toggleBattle()">Battle!</button>
 
+  <progress id="healthBarP1" value="1"></progress>
+  <progress id="healthBarP2" value="1"></progress>
+
 
   <script src="soldier.js"></script>
-
   <script src="script.js"></script>
 </body>
 
