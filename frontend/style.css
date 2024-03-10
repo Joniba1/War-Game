@@ -19,7 +19,6 @@
     background-color: #f3f3f3;
 }
 
-/* Style the progress bar fill */
 #healthBarP1::-webkit-progress-value {
     background-color: #4caf50;
 }
@@ -28,7 +27,6 @@
     background-color: #2196f3;
 }
 
-/* Style the progress bar track */
 #healthBarP1::-webkit-progress-bar {
     background-color: #ccc;
 }
