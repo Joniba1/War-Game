@@ -10,7 +10,7 @@ I have numerous general ideas for the core mechanics of the game.
 
 - I also plan to add different types of troops based on their rank, such as foot troops, archers, and potentially mages or tanks (giants or so) in the future.
 
-While I haven't gotten around to implementing animations and textures just yet, I plan to add them eventually to make the game more interactive.
+While I haven't gotten around to implementing animations and textures just yet, I plan to add them eventually and make the game more interactive.
 
  
 Ik the directories are wrong, ill change them eventually

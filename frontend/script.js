@@ -3,9 +3,9 @@ const ctx = canvas.getContext('2d');
 
 let armyP1 = [];
 let armyP2 = [];
-
 let spacing = 100;
 let armySize = 6;
+
 let firstArrival = false;
 
 let healthP1 = 0;
@@ -15,10 +15,19 @@ let healthBarP1 = document.getElementById("healthBarP1");
 let healthBarP2 = document.getElementById("healthBarP2");
 
 
+let troopsAddedP1 = 0;
+let troopsAddedP2 = 0;
+
+let battlingSoldiersP1 = [];
+let battlingSoldiersP2 = [];
+
+let attackDuration = 100;
+let battleInProgress = false;
+
+let attackerIndex = 0;
+
+
 initializeArmies();
-
-
-
 
 function initializeArmies() {
   let posY = canvas.height - 770; //armies initial y position
@@ -44,17 +53,6 @@ function initializeArmies() {
     posY += spacing;
   }
 }
-
-let troopsAddedP1 = 0;
-let troopsAddedP2 = 0;
-
-let battlingSoldiersP1 = [];
-let battlingSoldiersP2 = [];
-
-let attackDuration = 100;
-let battleInProgress = false;
-
-// let player1Turn = true;
 
 
 function addTroop(playerIndex) {
@@ -132,7 +130,7 @@ function battleFirstMovement() {
     }
 
 
-    if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) {
+    if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) { //if the soldiers have reached their destination
       firstArrival = true;
       attack();
     }
@@ -140,10 +138,9 @@ function battleFirstMovement() {
 }
 
 
-let attackerIndex = 0;
 
 function attack() {
-  // Turn
+  //Turn to attack
   let attacker;
   let defender;
 
@@ -157,19 +154,19 @@ function attack() {
 
   let length = Math.min(troopsAddedP1, troopsAddedP2);
 
+  //Damage infliction and its consequences
   for (let i = 0; i < length; i++) {
-
     attacker[i].isAttacking = true; //isAttacking controls the attack box rendering.
     // Apply damage
     for (let j = 0; j < length; j++) {
-      const opponent = defender[j];
+      const opponent = defender[i];
       //if (opponent === undefined) continue; // Skip if opponent is not in battle
       if (opponent && !opponent.hasTakenDamageThisRound && !isDead(opponent)) {
-        const damage = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
+        const damage = Math.floor(Math.random() * (50 - 10 + 1)) + 10; //random damage for now
         opponent.health -= damage;
         opponent.hasTakenDamageThisRound = true;
 
-        //log debug
+        //log debug and healthbar handling
         if (attackerIndex % 2 == 0) {
           console.log("P2: ", j, " health:", opponent.health);
           healthBarP1.value -= damage;
@@ -182,22 +179,19 @@ function attack() {
 
         if (isDead(opponent)) {
           console.log("Soldier: ", opponent.index, " has died");
-
           // Remove the soldier from the rendering array (armyP1 or armyP2)
-          if (defender === battlingSoldiersP1) {
-            console.log("P1 spliced");
-            armyP1.splice(armyP1.indexOf(opponent), 1);
-          } else {
-            console.log("P2 spliced");
+          if (attackerIndex % 2 === 0) {
             armyP2.splice(armyP2.indexOf(opponent), 1);
+          } else {
+            armyP1.splice(armyP1.indexOf(opponent), 1);
           }
-
           battlingSoldiersP1 = battlingSoldiersP1.filter(soldier => soldier.health > 0);
           battlingSoldiersP2 = battlingSoldiersP2.filter(soldier => soldier.health > 0);
+          attacker = attacker.filter(soldier => soldier.health > 0);
+          defender = defender.filter(soldier => soldier.health > 0);
 
 
         }
-        //break; // Exit the loop after applying damage to one opponent
       }
     }
   }
@@ -221,6 +215,10 @@ function attack() {
     }, 500);
   }, 500);
 }
+
+
+
+
 
 
 function isDead(soldier) {

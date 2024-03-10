@@ -1,39 +1,37 @@
-/* Center the first progress bar horizontally */
 #healthBarP1 {
     position: absolute;
-    top: 10px; /* Distance from the top */
-    left: 25%; /* Adjusted to swap positions */
-    width: 200px; /* Set your desired width */
-    height: 20px; /* Set your desired height */
+    top: 10px;
+    left: 25%;
+    width: 200px;
+    height: 20px; 
     border: none;
-    background-color: #f3f3f3; /* Background color of the progress bar */
+    background-color: #f3f3f3; 
 }
 
-/* Center the second progress bar horizontally */
+
 #healthBarP2 {
     position: absolute;
-    top: 10px; /* Distance from the top */
-    left: 75%; /* Adjusted to swap positions */
-    width: 200px; /* Set your desired width */
-    height: 20px; /* Set your desired height */
+    top: 10px; 
+    left: 75%;
+    width: 200px; 
+    height: 20px; 
     border: none;
-    background-color: #f3f3f3; /* Background color of the progress bar */
+    background-color: #f3f3f3; 
 }
 
 /* Style the progress bar fill */
 #healthBarP1::-webkit-progress-value {
-    background-color: #4caf50; /* Fill color for Player 1 */
+    background-color: #4caf50;
 }
 
 #healthBarP2::-webkit-progress-value {
-    background-color: #2196f3; /* Fill color for Player 2 */
-}
+    background-color: #2196f3; 
 
 /* Style the progress bar track */
 #healthBarP1::-webkit-progress-bar {
-    background-color: #ccc; /* Track color for Player 1 */
+    background-color: #ccc; 
 }
 
 #healthBarP2::-webkit-progress-bar {
-    background-color: #ccc; /* Track color for Player 2 */
+    background-color: #ccc;
 }

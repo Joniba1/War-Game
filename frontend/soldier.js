@@ -58,9 +58,9 @@ class Soldier {
         }
     }
 
-    attack() { //todo
+    // attack() { //todo
 
-    }
+    // }
 
 }
 
