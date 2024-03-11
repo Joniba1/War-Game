@@ -97,6 +97,8 @@ function battleFirstMovement() {
 
     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) { //if the soldiers have reached their destination
       firstArrival = true;
+      console.log(armyP1[0].position.x, armyP2[0].position.x);
+
       attack();
     }
   }
@@ -120,7 +122,6 @@ function attack() {
   //Damage infliction and its consequences
   for (let i = 0; i < length; i++) {
     let opponent;
-
 
     defender.forEach(soldier => {
       if (soldier && attacker[i] && soldier.position.y === attacker[i].position.y && soldier.health > 0) {
@@ -190,10 +191,9 @@ function attack() {
     setTimeout(() => { //Delay before calling attack() again 
       if (battlingSoldiersP1.some(soldier => soldier && soldier.health > 0) && battlingSoldiersP2.some(soldier => soldier && soldier.health > 0)) {
         attackerIndex++; // Switch to the other player
-        console.log("attack was called");
-
-        reArrangeSoldiers(attacker, defender); //Ik its being called twice
         console.log("reArrangeSoldiers was called");
+        reArrangeSoldiers(attacker, defender); //Ik its being called twice
+        console.log("attack was called");
         attack();
       }
     }, 800);
@@ -299,17 +299,21 @@ function leap(soldier, direction) {
   if (soldier) {
     if (attackerIndex % 2 === 0) {
       targetX = direction === 'forward' ? canvas.width / 2 + 40 : canvas.width / 2 - 40;
-    } else {
       targetX = direction === 'backward' ? canvas.width / 2 - 40 : canvas.width / 2 + 40;
+    } else {
+      targetX = direction === 'forward' ? canvas.width / 2 - 40 : canvas.width / 2 + 40;
+      targetX = direction === 'backward' ? canvas.width / 2 + 40 : canvas.width / 2 - 40;
     }
+    if (targetX != soldier.position.x) {
 
-    console.log("leaped");
-    soldier.position.x = targetX;
-    soldier.attackbox.position.x = soldier.position.x + soldier.attackbox.offset.x;
-
-    console.log(soldier.position.x)
+      console.log("leaped");
+      soldier.position.x = targetX;
+      soldier.attackbox.position.x = soldier.position.x + soldier.attackbox.offset.x;
+      console.log(soldier.position.x)
+    }
   }
 }
+
 
 
 
