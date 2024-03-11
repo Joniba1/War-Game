@@ -27,7 +27,6 @@ let attackerIndex = 0; //turn to attack
 
 //let attackDuration = 100;
 
-
 initializeArmies();
 
 function initializeArmies() {
@@ -35,7 +34,7 @@ function initializeArmies() {
 
   for (let i = 0; i < armySize; i++) {
     // Create soldier for armyP1
-    let soldierP1 = new Soldier(i, {
+    const soldierP1 = new Soldier(i, {
       position: { x: canvas.width - 70, y: posY },
       velocity: { x: 4, y: 4 },
       offset: { x: -30, y: 0 }
@@ -43,7 +42,7 @@ function initializeArmies() {
     armyP1.push(soldierP1);
 
     // Create soldier for armyP2
-    let soldierP2 = new Soldier(i, {
+    const soldierP2 = new Soldier(i, {
       position: { x: 40, y: posY },
       velocity: { x: 4, y: 4 },
       offset: { x: 0, y: 0 }
@@ -171,6 +170,7 @@ function attack() {
     }
   }
 
+
   setTimeout(() => {
     if (attacker != null) {
       attacker.forEach(soldier => {
@@ -180,7 +180,10 @@ function attack() {
         }
       });
     }
+  }, 400);
 
+
+  setTimeout(() => {
     defender.forEach(soldier => {
       if (soldier) {
         soldier.isAttacking = false; //unnecessary
@@ -196,10 +199,9 @@ function attack() {
         console.log("attack was called");
         attack();
       }
-    }, 800);
-  }, 800);
+    }, 700);
+  }, 700);
 }
-
 
 function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the battling soldiers
   let idleSoldierP1;
@@ -288,59 +290,25 @@ function animate() {
   window.requestAnimationFrame(animate);
 }
 
-
-
-
-
-
-
 function leap(soldier, direction) {
   let targetX;
   if (soldier) {
     if (attackerIndex % 2 === 0) {
-      targetX = direction === 'forward' ? canvas.width / 2 + 40 : canvas.width / 2 - 40;
-      targetX = direction === 'backward' ? canvas.width / 2 - 40 : canvas.width / 2 + 40;
+      targetX = direction === 'forward' ? soldier.position.x - 60 : 1015;
     } else {
-      targetX = direction === 'forward' ? canvas.width / 2 - 40 : canvas.width / 2 + 40;
-      targetX = direction === 'backward' ? canvas.width / 2 + 40 : canvas.width / 2 - 40;
+      targetX = direction === 'forward' ? soldier.position.x + 60 : 885;
     }
-    if (targetX != soldier.position.x) {
 
-      console.log("leaped");
-      soldier.position.x = targetX;
-      soldier.attackbox.position.x = soldier.position.x + soldier.attackbox.offset.x;
-      console.log(soldier.position.x)
+    //Leap animation
+    function moveSoldier() {
+      if (soldier.position.x !== targetX) {
+        soldier.update(targetX, soldier.position.y);
+        requestAnimationFrame(moveSoldier);
+      }
     }
+    moveSoldier();
+
   }
 }
 
-
-
-
-// function leap(soldier, direction) {
-//   let targetX;
-//   if (soldier) {
-//     if (attackerIndex % 2 === 0) {
-//       targetX = direction === 'forward' ? soldier.position.x - 40 : soldier.position.x + 40;
-//     } else {
-//       targetX = direction === 'backward' ? soldier.position.x + 40 : soldier.position.x - 40;
-//     }
-
-//     //Leap animation
-//     function moveSoldier() {
-//       if (soldier.position.x !== targetX) {
-//         soldier.update(targetX, soldier.position.y);
-//         requestAnimationFrame(moveSoldier);
-//       }
-//     }
-//     moveSoldier();
-
-//   }
-// }
-
 animate();
-
-
-
-
-
