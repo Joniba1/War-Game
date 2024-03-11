@@ -24,7 +24,7 @@ let battlingSoldiersP2 = [];
 let attackDuration = 100;
 let battleInProgress = false;
 
-let attackerIndex = 0;
+let attackerIndex = 0; //turn to attack
 
 
 initializeArmies();
@@ -54,13 +54,12 @@ function initializeArmies() {
   }
 }
 
-
 function addTroop(playerIndex) {
 
   if (playerIndex === 1) {
     soldier = armyP1[troopsAddedP1];
     soldier.position.x = canvas.width - canvas.width / 3;
-    soldier.update(armyP1[troopsAddedP1].position.x, soldier.position.y) //in order for the attack box to follow 
+    soldier.update(soldier.position.x, soldier.position.y) //in order for the attack box to follow 
     troopsAddedP1++;
 
     healthP1 += soldier.health;
@@ -70,7 +69,10 @@ function addTroop(playerIndex) {
     soldier.position.x = canvas.width / 3;
     soldier.update(soldier.position.x, soldier.position.y)
     troopsAddedP2++;
+
     healthP2 += soldier.health;
+
+
   }
 
   healthBarP1.max = healthP1;
@@ -79,7 +81,6 @@ function addTroop(playerIndex) {
   healthBarP2.max = healthP1;
   healthBarP2.value = healthP1;
 }
-
 
 function battleFirstMovement() {
   spacing = 65;
@@ -91,6 +92,7 @@ function battleFirstMovement() {
       soldier.update(canvas.width / 2 + spacing, soldier.position.y);
       battlingSoldiersP1.push(soldier);
     }
+
 
 
     for (let i = 0; i < troopsAddedP2; i++) {
@@ -106,6 +108,101 @@ function battleFirstMovement() {
     }
   }
 }
+
+// function attack() {
+//   //Turn to attack
+//   let attacker;
+//   let defender;
+
+//   if (attackerIndex % 2 === 0) {
+//     attacker = battlingSoldiersP1;
+//     defender = battlingSoldiersP2;
+//   } else {
+//     attacker = battlingSoldiersP2;
+//     defender = battlingSoldiersP1;
+//   }
+
+//   let length = Math.min(battlingSoldiersP1.length, battlingSoldiersP2.length);
+
+//   //let length = Math.min(troopsAddedP1, troopsAddedP2);
+
+//   //Damage infliction and its consequences
+//   for (let i = 0; i < length; i++) {
+//     if (attacker[i]) { //handle null  && defender[i
+//       attacker[i].isAttacking = true; //isAttacking controls the attack box rendering.
+//       let opponent;
+
+//       defender.forEach(soldier => {
+//         if (soldier && soldier.position.y === attacker[i].position.y) {
+//           opponent = soldier;
+//         }
+//       });
+
+//       // Apply damage
+//       if (opponent && !opponent.hasTakenDamageThisRound && !isDead(opponent)) {
+//         const damage = Math.floor(Math.random() * (50 - 10 + 1)) + 10; //random damage for now
+//         opponent.health -= damage;
+//         opponent.hasTakenDamageThisRound = true;
+
+//         //log debug and healthbar handling
+//         if (attackerIndex % 2 == 0) {
+//           console.log("P2: ", opponent.index, " health:", opponent.health);
+//           healthBarP1.value -= damage;
+
+//         } else {
+//           console.log("P1: ", opponent.index, " health:", opponent.health);
+//           healthBarP2.value -= damage;
+
+//         }
+
+//         if (isDead(opponent)) {
+//           console.log("Soldier: ", opponent.index, " has died");
+//           if (attackerIndex % 2 === 0) {
+//             armyP2[armyP2.indexOf(opponent)] = null;
+//           } else {
+//             armyP1[armyP1.indexOf(opponent)] = null;
+//           }
+
+//           battlingSoldiersP1[battlingSoldiersP1.indexOf(opponent)] = null;
+//           battlingSoldiersP2[battlingSoldiersP2.indexOf(opponent)] = null;
+//           attacker[attacker.indexOf(opponent)] = null;
+//           defender[defender.indexOf(opponent)] = null;
+
+//           reArrangeSoldiers(attacker, defender);
+//           console.log("rearrangesoldiers was called");
+//         }
+
+//       }
+//     }
+//   }
+
+
+//   setTimeout(() => {
+//     attacker.forEach(soldier => {
+//       if (soldier !== null) {
+//         soldier.isAttacking = false;
+//       }
+//     });
+
+//     setTimeout(() => {
+//       defender.forEach(soldier => {
+//         if (soldier !== null) {
+//           soldier.isAttacking = false;
+//           soldier.hasTakenDamageThisRound = false;
+//         }
+//       });
+
+//       if (battlingSoldiersP1.some(soldier => soldier && soldier.health > 0) && battlingSoldiersP2.some(soldier => soldier && soldier.health > 0)) {
+//         attackerIndex++; // Switch to the other player
+//         console.log("attack was called");
+
+//         attack();
+//       }
+
+//     }, 500);
+//   }, 500);
+
+// }
 
 
 
@@ -128,16 +225,19 @@ function attack() {
   //Damage infliction and its consequences
   for (let i = 0; i < length; i++) {
 
-    if (attacker[i] && defender[i]) { //handle null
+    let opponent;
+
+    defender.forEach(soldier => {
+      if (soldier && attacker[i] && soldier.position.y === attacker[i].position.y && soldier.health > 0) {
+        opponent = soldier;
+        //console.log(attacker[i].index, "has soldier number ", opponent.index, " as an opponent");
+      }
+    });
+
+
+
+    if (attacker[i] && opponent) { //handle null
       attacker[i].isAttacking = true; //isAttacking controls the attack box rendering.
-
-      let opponent;
-
-      defender.forEach(soldier => {
-        if (soldier && attacker[i] && soldier.position.y === attacker[i].position.y) {
-          opponent = soldier;
-        }
-      });
 
 
       // Apply damage
@@ -204,8 +304,8 @@ function attack() {
       reArrangeSoldiers(attacker, defender);
       console.log("rearrangesoldiers was called");
 
-    }, 500);
-  }, 500);
+    }, 800);
+  }, 800);
 
 }
 
@@ -280,7 +380,7 @@ function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the b
       if (!isInArray(battlingSoldiersP2[i], idleSoldiersP2)) {
         idleSoldierP2 = battlingSoldiersP2[i];
         idleSoldiersP2.push(idleSoldierP2);
-        console.log("P1:", idleSoldierP2);
+        console.log("P2:", idleSoldierP2);
         break;
       }
     }
@@ -288,7 +388,7 @@ function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the b
 
   if (idleSoldierP1 && idleSoldierP2) {
     console.log("Soldiers need to be moved");
-    let targetPositionOccupied = false;
+    //let targetPositionOccupied = false;
 
     let targetY = idleSoldierP2.position.y;
     console.log(targetY);
@@ -296,22 +396,27 @@ function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the b
     for (let i = 0; i < armyP1.length; i++) {
       if (armyP1[i] === idleSoldierP1 && armyP1[i].position.y !== targetY) {
         //check if its already occupied
-        for (const otherSoldier of armyP1) {
-          if (otherSoldier && otherSoldier !== armyP1[i] && otherSoldier.position.y === targetY) {
-            targetPositionOccupied = true;
-            console.log("go");
-            break;
-          }
-        }
+        // for (const otherSoldier of armyP1) {
+        //   if (otherSoldier && otherSoldier !== armyP1[i] && otherSoldier.position.y === targetY) {
+        //     targetPositionOccupied = true;
+        //     console.log("go");
+        //     break;
+        //   }
+        // }
 
-        if (!targetPositionOccupied) {
-          armyP1[i].position.y = targetY
-          console.log(`Soldier ${armyP1[i].index} was moved`);
-        }
+        //if (!targetPositionOccupied) {
+
+        armyP1[i].position.y = targetY;
+        armyP1[i].attackbox.position.y = armyP1[i].position.y;
+        console.log(`Soldier ${armyP1[i].index} was moved`);
+        //}
       }
     }
   }
 }
+
+
+
 
 function isLinedUpOpponent(troop, array) {
   array.forEach(soldier => {
@@ -330,8 +435,6 @@ function isInArray(soldier, array) {
   }
   return false;
 }
-
-
 
 
 animate();
