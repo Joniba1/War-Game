@@ -22,9 +22,9 @@ class Soldier {
     }
 
 
-    draw() {
+    draw(soldierColor) { //temp var
         ctx.beginPath();
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = soldierColor;
         ctx.fillRect(this.position.x, this.position.y, 40, 60);
 
         //attackbox
