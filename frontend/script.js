@@ -9,7 +9,6 @@ const swordsmenNumberP2 = document.getElementById("SwordsmenLeftNumberP2");
 const wizardsNumberP1 = document.getElementById("WizardsLeftNumberP1");
 const wizardsNumberP2 = document.getElementById("WizardsLeftNumberP2");
 
-
 //Vars
 let armyP1 = [];
 let armyP2 = [];
@@ -47,6 +46,11 @@ let aSoldierWasMoved = false;
 let swordsmenAddedFlag = false;
 let wizardsAddedFlag = false;
 
+let fireballInFlight = false;
+
+let fireFireball = false;
+
+
 //Troops left indicator
 const troopsNumberSoldierP1 = new Soldier(-1, {
   position: { x: canvas.width - 250, y: 70 },
@@ -69,6 +73,7 @@ const troopsNumberWizardP2 = new Wizard(-1, {
 });
 
 initializeArmies();
+
 
 function initializeArmies() {
   let posY = canvas.height - 770; //armies initial y position
@@ -99,12 +104,12 @@ function initializeArmies() {
   posY = canvas.height - 650;
   for (let i = 0; i < wizards; i++) {
     const wizardP1 = new Wizard(i, {
-      position: { x: 0, y: posY }
+      position: { x: canvas.width - canvas.width / 3 + 120, y: posY }
     });
     wizardsArrayP1.push(wizardP1);
 
     const wizardP2 = new Wizard(i, {
-      position: { x: 0, y: posY }
+      position: { x: canvas.width / 3 - 120, y: posY }
     });
     wizardsArrayP2.push(wizardP2);
     posY += spacing;
@@ -182,7 +187,14 @@ function battleFirstMovement() {
   }
 }
 
+let wizardOpponent;
 function attack() {
+
+  wizardsArrayP1.forEach(wizard => {
+    wizard.fireball.position.x = wizard.position.x;
+    wizard.fireball.position.y = wizard.position.y;
+  });
+
   //Turn to attack
   let attacker;
   let defender;
@@ -197,6 +209,7 @@ function attack() {
 
   let length = Math.max(troopsAddedP1, troopsAddedP2);
 
+  fireFireball = true;
   //Damage infliction and its consequences
   for (let i = 0; i < length; i++) {
     let opponent;
@@ -204,6 +217,7 @@ function attack() {
     defender.forEach(soldier => {
       if (soldier && attacker[i] && soldier.position.y === attacker[i].position.y && soldier.health > 0) {
         opponent = soldier;
+        wizardOpponent = soldier;
       }
     });
 
@@ -365,6 +379,7 @@ function renderArmy() {
     for (let i = 0; i < wizardsAddedP1; i++) {
       if (wizardsArrayP1[i]) {
         wizardsArrayP1[i].draw();
+
       }
     }
 
@@ -375,37 +390,9 @@ function renderArmy() {
     }
   }
 
-}
+  //wizardsArrayP1[0].fire(opponent.position.x, opponent.position.y);
 
-function isDead(soldier) {
-  if (soldier.health > 0) {
-    return false;
-  }
-  return true;
-}
 
-function isLinedUpOpponent(troop, array) {
-  array.forEach(soldier => {
-    if (soldier && troop.position.y === soldier.position.y) {
-      return true;
-    }
-  });
-  return false;
-}
-
-function toggleBattle() {
-  battleInProgress = true; // Set flag to indicate battle in progress
-}
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  renderArmy(); // Renders the army every frame
-
-  if (battleInProgress && !firstArrival) {
-    battleFirstMovement();
-  }
-
-  window.requestAnimationFrame(animate);
 }
 
 function leap(soldier, direction) {
@@ -428,5 +415,43 @@ function leap(soldier, direction) {
 
   }
 }
+
+function isDead(soldier) {
+  if (soldier.health > 0) {
+    return false;
+  }
+  return true;
+}
+
+function isLinedUpOpponent(troop, array) {
+  array.forEach(soldier => {
+    if (soldier && troop.position.y === soldier.position.y) {
+      return true;
+    }
+  });
+  return false;
+}
+
+const toggleBattle = () => battleInProgress = true;
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  renderArmy(); // Renders the army every frame
+
+  wizardsArrayP1.forEach(wizard => {
+    if (wizardOpponent && wizard && wizard.health > 0 && fireFireball) {
+      wizard.fire(wizardOpponent.position.x, wizardOpponent.position.y);
+    }
+  });
+
+
+  if (battleInProgress && !firstArrival) {
+    battleFirstMovement();
+  }
+
+  window.requestAnimationFrame(animate);
+}
+
+
 
 animate();
