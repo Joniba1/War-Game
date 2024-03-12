@@ -25,7 +25,7 @@ let firstArrival = false; //first movement flag
 
 let attackerIndex = 0; //turn to attack
 
-//let attackDuration = 100;
+let aSoldierWasMoved = false;
 
 initializeArmies();
 
@@ -57,6 +57,7 @@ function initializeArmies() {
 function addTroop(playerIndex) {
   if (playerIndex === 1) {
     soldier = armyP1[troopsAddedP1];
+    console.log(soldier);
     soldier.position.x = canvas.width - canvas.width / 3;
     soldier.update(soldier.position.x, soldier.position.y) //in order for the attack box to follow 
     troopsAddedP1++;
@@ -97,7 +98,6 @@ function battleFirstMovement() {
     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) { //if the soldiers have reached their destination
       firstArrival = true;
       console.log(armyP1[0].position.x, armyP2[0].position.x);
-
       attack();
     }
   }
@@ -137,19 +137,20 @@ function attack() {
 
       // Apply damage
       if (opponent && !opponent.hasTakenDamageThisRound && !isDead(opponent)) {
-        const damage = Math.floor(Math.random() * (40 - 10 + 1)) + 10; //random damage for now
+        let damage = Math.floor(Math.random() * (40 - 10 + 1)) + 10; //random damage for now
+        if (damage > opponent.health) {
+          damage = opponent.health;
+        }
         opponent.health -= damage;
         opponent.hasTakenDamageThisRound = true;
 
         //log debug and healthbar handling
         if (attackerIndex % 2 == 0) {
-          console.log("P2: ", opponent.index, " health:", opponent.health);
+          console.log(`P2: ${opponent.index} health: ${opponent.health}`);
           healthBarP1.value -= damage;
-
         } else {
-          console.log("P1: ", opponent.index, " health:", opponent.health);
+          console.log(`P1: ${opponent.index} health: ${opponent.health}`);
           healthBarP2.value -= damage;
-
         }
 
         if (isDead(opponent)) {
@@ -170,7 +171,6 @@ function attack() {
     }
   }
 
-
   setTimeout(() => {
     if (attacker != null) {
       attacker.forEach(soldier => {
@@ -182,7 +182,6 @@ function attack() {
     }
   }, 400);
 
-
   setTimeout(() => {
     defender.forEach(soldier => {
       if (soldier) {
@@ -191,13 +190,19 @@ function attack() {
       }
     });
 
+
     setTimeout(() => { //Delay before calling attack() again 
       if (battlingSoldiersP1.some(soldier => soldier && soldier.health > 0) && battlingSoldiersP2.some(soldier => soldier && soldier.health > 0)) {
-        attackerIndex++; // Switch to the other player
+        attackerIndex++;
         console.log("reArrangeSoldiers was called");
         reArrangeSoldiers(attacker, defender); //Ik its being called twice
-        console.log("attack was called");
-        attack();
+        if (aSoldierWasMoved) {
+          setTimeout(attack, 300);
+          attackerIndex--;
+        }
+        else {
+          attack();
+        }
       }
     }, 700);
   }, 700);
@@ -206,6 +211,9 @@ function attack() {
 function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the battling soldiers
   let idleSoldierP1;
   let idleSoldierP2;
+  let isOccupied = false;
+  aSoldierWasMoved = false;
+
 
   for (let i = 0; i < battlingSoldiersP1.length; i++) {
     if (battlingSoldiersP1[i] && battlingSoldiersP1[i].health > 0 && !battlingSoldiersP2[i] && !isLinedUpOpponent(battlingSoldiersP1[i], battlingSoldiersP2)) {
@@ -223,13 +231,23 @@ function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the b
     console.log("Soldiers need to be moved");
     let targetY = idleSoldierP2.position.y;
 
-    //Add isOcuppied TODO
-    for (let i = 0; i < armyP1.length; i++) {
-      if (armyP1[i] === idleSoldierP1 && armyP1[i].position.y !== targetY) {
-        armyP1[i].position.y = targetY;
-        armyP1[i].attackbox.position.y = armyP1[i].position.y;
-        console.log(`Soldier ${armyP1[i].index} was moved`);
+    // Check if the target position is occupied
+    if (battlingSoldiersP1.some(soldier => soldier && soldier.position.y === idleSoldierP2.position.y && soldier.health > 0)) {
+      isOccupied = true;
+      console.log("ocuppied set to true");
+    }
+
+    if (!isOccupied) {
+      for (let i = 0; i < armyP1.length; i++) {
+        if (armyP1[i] === idleSoldierP1 && armyP1[i].position.y !== targetY) {
+          armyP1[i].position.y = targetY;
+          armyP1[i].attackbox.position.y = armyP1[i].position.y;
+          console.log(`Soldier ${armyP1[i].index} was moved`);
+          aSoldierWasMoved = true;
+        }
       }
+    } else {
+      console.log("Target position is occupied. Cannot move soldiers.");
     }
   }
 }
