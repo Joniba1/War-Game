@@ -16,17 +16,43 @@
   <!-- Canvas -->
   <canvas id="canvas" width="1900" height="900" style="border: 1px solid black;"></canvas>
 
-  <button class="addTroopP1" onclick="addTroop(1)">addTroop1</button>
-  <button class="addTroopP2" onclick="addTroop(2)">addTroop2</button>
+  <!-- buttons -->
+  <button class="addTroopP1" onclick="addSwordsman(1)">addTroop1</button>
+  <button class="addTroopP2" onclick="addSwordsman(2)">addTroop2</button>
+  <button class="addWizardP1" onclick="addWizard(1)">Add Wizard1</button>
+  <button class="addWizardP1" onclick="addWizard(2)">Add Wizard2</button>
+
   <button class="battle" onclick="toggleBattle()">Battle!</button>
 
   <progress id="healthBarP1" value="1"></progress>
   <progress id="healthBarP2" value="1"></progress>
 
+  <h1 id="P1-Army-Header">Player I Army</h1>
+  <h1 id="P2-Army-Header">Player II Army</h1>
+
+  <!-- Swordsmen text //change to lowercase letters-->
+  <p id="SwordsmenP1">Swordsmen:</p>
+  <p id="SwordsmenLeftNumberP1"></p>
+  <p id="SwordsmenP2">Swordsmen:</p>
+  <p id="SwordsmenLeftNumberP2"></p>
+
+  <!-- Wizards text -->
+  <p id="WizardsP1">Wizards:</p>
+  <p id="WizardsLeftNumberP1"></p>
+  <p id="WizardsP2">Wizards:</p>
+  <p id="WizardsLeftNumberP2"></p>
+
+
+
 
   <script src="soldier.js"></script>
+  <script src="wizard.js"></script>
+
   <script src="script.js"></script>
-  
+
+
+
+
 </body>
 
 </html>

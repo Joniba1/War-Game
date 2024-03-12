@@ -4,18 +4,36 @@ const ctx = canvas.getContext('2d');
 
 let healthBarP1 = document.getElementById("healthBarP1");
 let healthBarP2 = document.getElementById("healthBarP2");
+const swordsmenNumberP1 = document.getElementById("SwordsmenLeftNumberP1");
+const swordsmenNumberP2 = document.getElementById("SwordsmenLeftNumberP2");
+const wizardsNumberP1 = document.getElementById("WizardsLeftNumberP1");
+const wizardsNumberP2 = document.getElementById("WizardsLeftNumberP2");
+
 
 //Vars
 let armyP1 = [];
 let armyP2 = [];
+let wizardsArrayP1 = [];
+let wizardsArrayP2 = [];
+
 let spacing = 100;
-let armySize = 7;
+
+let armySize = 6; //swordsmen/soldiers
+swordsmenNumberP1.textContent = armySize;
+swordsmenNumberP2.textContent = armySize;
+
+let wizards = 3;
+wizardsNumberP1.textContent = wizards;
+wizardsNumberP2.textContent = wizards;
 
 let healthP1 = 0;
 let healthP2 = 0;
 
 let troopsAddedP1 = 0;
 let troopsAddedP2 = 0;
+let wizardsAddedP1 = 0;
+let wizardsAddedP2 = 0;
+
 
 let battlingSoldiersP1 = [];
 let battlingSoldiersP2 = [];
@@ -26,16 +44,40 @@ let firstArrival = false; //first movement flag
 let attackerIndex = 0; //turn to attack
 
 let aSoldierWasMoved = false;
+let swordsmenAddedFlag = false;
+let wizardsAddedFlag = false;
+
+//Troops left indicator
+const troopsNumberSoldierP1 = new Soldier(-1, {
+  position: { x: canvas.width - 250, y: 70 },
+  velocity: { x: 0, y: 0 },
+  offset: { x: -30, y: 0 }
+});
+
+const troopsNumberSoldierP2 = new Soldier(-2, {
+  position: { x: 65, y: 70 },
+  velocity: { x: 0, y: 0 },
+  offset: { x: -30, y: 0 }
+});
+
+const troopsNumberWizardP1 = new Wizard(-1, {
+  position: { x: canvas.width - 250, y: 150 }
+});
+
+const troopsNumberWizardP2 = new Wizard(-1, {
+  position: { x: 65, y: 150 }
+});
 
 initializeArmies();
 
 function initializeArmies() {
   let posY = canvas.height - 770; //armies initial y position
 
+  //Initialize swordsmen
   for (let i = 0; i < armySize; i++) {
     // Create soldier for armyP1
     const soldierP1 = new Soldier(i, {
-      position: { x: canvas.width - 70, y: posY },
+      position: { x: 0, y: posY },
       velocity: { x: 4, y: 4 },
       offset: { x: -30, y: 0 }
     });
@@ -43,7 +85,7 @@ function initializeArmies() {
 
     // Create soldier for armyP2
     const soldierP2 = new Soldier(i, {
-      position: { x: 40, y: posY },
+      position: { x: 0, y: posY },
       velocity: { x: 4, y: 4 },
       offset: { x: 0, y: 0 }
     });
@@ -52,16 +94,32 @@ function initializeArmies() {
     // Adjusting posY for next soldier
     posY += spacing;
   }
+
+  //Initialize wizards
+  posY = canvas.height - 650;
+  for (let i = 0; i < wizards; i++) {
+    const wizardP1 = new Wizard(i, {
+      position: { x: 0, y: posY }
+    });
+    wizardsArrayP1.push(wizardP1);
+
+    const wizardP2 = new Wizard(i, {
+      position: { x: 0, y: posY }
+    });
+    wizardsArrayP2.push(wizardP2);
+    posY += spacing;
+  }
 }
 
-function addTroop(playerIndex) {
+function addSwordsman(playerIndex) {
+  swordsmenAddedFlag = true;
   if (playerIndex === 1) {
     soldier = armyP1[troopsAddedP1];
-    console.log(soldier);
     soldier.position.x = canvas.width - canvas.width / 3;
     soldier.update(soldier.position.x, soldier.position.y) //in order for the attack box to follow 
     troopsAddedP1++;
 
+    swordsmenNumberP1.textContent = armySize - troopsAddedP1;
     healthP1 += soldier.health;
   }
   else if (playerIndex === 2) {
@@ -70,19 +128,40 @@ function addTroop(playerIndex) {
     soldier.update(soldier.position.x, soldier.position.y)
     troopsAddedP2++;
 
+    swordsmenNumberP2.textContent = armySize - troopsAddedP2;
     healthP2 += soldier.health;
   }
 
   healthBarP1.max = healthP1;
   healthBarP1.value = healthP1;
 
-  healthBarP2.max = healthP1;
-  healthBarP2.value = healthP1;
+  healthBarP2.max = healthP2;
+  healthBarP2.value = healthP2;
+}
+
+function addWizard(playerIndex) {
+  console.log(wizardsAddedP1);
+  wizardsAddedFlag = true;
+  if (playerIndex === 1) {
+    wizard = wizardsArrayP1[wizardsAddedP1];
+    wizard.position.x = canvas.width - canvas.width / 3 + 120;
+    wizardsAddedP1++;
+
+    wizardsNumberP1.textContent = wizards - wizardsAddedP1;
+    healthP1 += wizard.health;
+  } else if (playerIndex === 2) {
+    wizard = wizardsArrayP2[wizardsAddedP2];
+    wizard.position.x = canvas.width / 3 - 120;
+    wizardsAddedP2++;
+
+    wizardsNumberP2.textContent = wizards - wizardsAddedP2;
+    healthP2 += wizard.health;
+  }
 }
 
 function battleFirstMovement() {
-  spacing = 65;
   if (!firstArrival) {
+    spacing = 65;
     // Battling troops movement
     for (let i = 0; i < troopsAddedP1; i++) {
       soldier = armyP1[i];
@@ -253,25 +332,46 @@ function reArrangeSoldiers(battlingSoldiersP1, battlingSoldiersP2) { //get the b
 }
 
 function renderArmy() {
-  for (let i = 0; i < armyP1.length; i++) {
-    if (armyP1[i]) {
-      armyP1[i].draw('red');
+  troopsNumberSoldierP1.draw('red');
+  troopsNumberSoldierP2.draw('green');
+  troopsNumberWizardP1.draw();
+  troopsNumberWizardP2.draw();
 
-      //debugging text
-      ctx.fillStyle = "black";
-      ctx.font = "12px Arial";
-      ctx.fillText(i, armyP1[i].position.x, armyP1[i].position.y - 10);
+  if (swordsmenAddedFlag) {
+    for (let i = 0; i < troopsAddedP1; i++) {
+      if (armyP1[i]) {
+        armyP1[i].draw('red');
+
+        //debugging text
+        ctx.fillStyle = "black";
+        ctx.font = "12px Arial";
+        ctx.fillText(i, armyP1[i].position.x, armyP1[i].position.y - 10);
+      }
+    }
+
+    for (let i = 0; i < troopsAddedP2; i++) {
+      if (armyP2[i]) {
+        armyP2[i].draw('green');
+
+        //debugging text
+        ctx.fillStyle = "black";
+        ctx.font = "12px Arial";
+        ctx.fillText(i, armyP2[i].position.x, armyP2[i].position.y - 10);
+      }
     }
   }
 
-  for (let i = 0; i < armyP2.length; i++) {
-    if (armyP2[i]) {
-      armyP2[i].draw('green');
+  if (wizardsAddedFlag) {
+    for (let i = 0; i < wizardsAddedP1; i++) {
+      if (wizardsArrayP1[i]) {
+        wizardsArrayP1[i].draw();
+      }
+    }
 
-      //debugging text
-      ctx.fillStyle = "black";
-      ctx.font = "12px Arial";
-      ctx.fillText(i, armyP2[i].position.x, armyP2[i].position.y - 10);
+    for (let i = 0; i < wizardsAddedP2; i++) {
+      if (wizardsArrayP2[i]) {
+        wizardsArrayP2[i].draw();
+      }
     }
   }
 
@@ -299,7 +399,7 @@ function toggleBattle() {
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  renderArmy(); // Render the army every frame
+  renderArmy(); // Renders the army every frame
 
   if (battleInProgress && !firstArrival) {
     battleFirstMovement();

@@ -1,18 +1,29 @@
+#P1-Army-Header {
+    position: absolute;
+    right: 70px;
+    top: 0px;
+}
+
+#P2-Army-Header {
+    position: absolute;
+    left: 70px;
+    top: 0px;
+}
+
 #healthBarP1 {
     position: absolute;
-    top: 10px;
-    left: 20%;
+    top: 30px;
+    left: 15.1%;
     width: 500px;
     height: 20px;
     border: none;
     background-color: #f3f3f3;
 }
 
-
 #healthBarP2 {
     position: absolute;
-    top: 10px;
-    right: 20%;
+    top: 30px;
+    right: 14.5%;
     width: 500px;
     height: 20px;
     border: none;
@@ -36,4 +47,52 @@
 }
 
 
+/* Swordsmen */
+#SwordsmenP1 {
+    position: absolute;
+    right: 7%;
+    top: 70px;
+}
 
+#SwordsmenP2 {
+    position: absolute;
+    left: 6.3%;
+    top: 70px;
+}
+
+#SwordsmenLeftNumberP1 {
+    position: absolute;
+    right: 10.74%;
+    top: 90px;
+}
+
+#SwordsmenLeftNumberP2 {
+    position: absolute;
+    left: 6.3%;
+    top: 90px;
+}
+
+/* Wizards */
+#WizardsP1 {
+    position: absolute;
+    right: 8.3%;
+    top: 150px;
+}
+
+#WizardsP2 {
+    position: absolute;
+    left: 6.3%;
+    top: 150px;
+}
+
+#WizardsLeftNumberP1 {
+    position: absolute;
+    right: 10.74%;
+    top: 170px;
+}
+
+#WizardsLeftNumberP2 {
+    position: absolute;
+    left: 6.3%;
+    top: 170px;
+}
