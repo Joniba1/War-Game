@@ -30,7 +30,7 @@ class Wizard {
     }
 
 
-    fire(targetX, targetY) {
+    fire(targetX, targetY, drawFireball) {
         const dx = targetX - this.fireball.position.x;
         const dy = targetY - this.fireball.position.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -43,9 +43,9 @@ class Wizard {
 
             this.fireball.position.x += vx;
             this.fireball.position.y += vy;
-            this.drawFireball(this.fireball.position.x, this.fireball.position.y);
-
-
+            if (drawFireball) {
+                this.drawFireball(this.fireball.position.x, this.fireball.position.y);
+            }
         } else {
             this.fireball.x = targetX;
             this.fireball.y = targetY;
