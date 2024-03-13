@@ -366,12 +366,10 @@ const reArrangeSoldiers = (battlingSoldiersP1, battlingSoldiersP2) => { //get th
   }
 }
 
-
+const background = new Sprite();
+background.setSource('img/background.png');
 
 const renderArmy = () => {
-  
-  const background = new Sprite();
-  background.setSource('background.png');
   background.drawBackground(ctx, canvas.width, canvas.height);
 
   troopsNumberSoldierP1.draw('red');
