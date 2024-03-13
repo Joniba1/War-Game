@@ -257,6 +257,7 @@ const attack = () => {
           healthBarP2.value -= damage;
         }
 
+
         if (isDead(opponent)) {
           console.log(`Soldier: ${opponent.index} has died`);
           if (attackerIndex % 2 === 0) {
@@ -278,7 +279,7 @@ const attack = () => {
 
 
   setTimeout(() => {
-    if (attacker != null) {
+    if (attacker) {
       attacker.forEach(soldier => {
         if (soldier) {
           soldier.isAttacking = false;
@@ -312,11 +313,11 @@ const attack = () => {
           attack();
         }
       }
-      // else if (battlingWizardsP1.some(wizard => wizard && wizard.health > 0) &&
-      //   battlingWizardsP2.some(wizard => wizard && wizard.health > 0)) {
-      //   attackerIndex++;
-      //   attack();
-      // }
+      else if (battlingWizardsP1.some(wizard => wizard && wizard.health > 0) &&
+        battlingWizardsP2.some(wizard => wizard && wizard.health > 0)) {
+        attackerIndex++;
+        attack();
+      }
     }, 700);
   }, 700);
 }
@@ -365,7 +366,14 @@ const reArrangeSoldiers = (battlingSoldiersP1, battlingSoldiersP2) => { //get th
   }
 }
 
+
+
 const renderArmy = () => {
+  
+  const background = new Sprite();
+  background.setSource('background.png');
+  background.drawBackground(ctx, canvas.width, canvas.height);
+
   troopsNumberSoldierP1.draw('red');
   troopsNumberSoldierP2.draw('green');
   troopsNumberWizardP1.draw();
@@ -384,6 +392,7 @@ const renderArmy = () => {
     }
 
     for (let i = 0; i < battlingSoldiersP2.length; i++) {
+
       if (armyP2[i]) {
         armyP2[i].draw('green');
 
@@ -433,7 +442,7 @@ const leap = (soldier, direction) => {
 }
 
 const isDead = (soldier) => {
-  if (soldier.health > 0) {
+  if (soldier && soldier.health > 0) {
     return false;
   }
   return true;
@@ -471,7 +480,7 @@ const animateWizardAttacks = () => {
     if (aliveSoldiers.length > 0) {
       wizardsArray.forEach((wizard, index) => {
         const targetSoldier = aliveSoldiers[index % aliveSoldiers.length]; // Cycle through alive enemies
-        if (wizard && wizard.health > 0 && targetSoldier && fireFireball) {
+        if (wizard && wizard.health > 0 && targetSoldier && fireFireball && targetSoldier.health > 0) {
           wizard.fire(targetSoldier.position.x, targetSoldier.position.y, drawFireball);
           if (detectCollision(wizard.fireball, targetSoldier) && !wizard.collisionDetected) {
             wizard.collisionDetected = true;
@@ -487,55 +496,61 @@ const animateWizardAttacks = () => {
 
             if (isDead(targetSoldier)) {
               drawFireball = false;
-              console.log("Soldier: ", targetSoldier.index, " has died");
               if (attackerIndex % 2 === 0) {
-                armyP1[armyP2.indexOf(targetSoldier)] = null;
-              } else {
-                armyP1[armyP2.indexOf(targetSoldier)] = null;
+                armyP2[armyP2.indexOf(targetSoldier)] = null;
+                console.log(armyP1[armyP1.indexOf(targetSoldier)]);
+                console.log(`P1 Soldier: ${targetSoldier.index} has died by a wizard`);
+              }
+              else {
+                armyP1[armyP1.indexOf(targetSoldier)] = null;
+                console.log(`P2 Soldier: ${targetSoldier.index} has died by a wizard`);
+                console.log(armyP2[0]);
               }
 
               battlingSoldiersP1[battlingSoldiersP1.indexOf(targetSoldier)] = null;
               battlingSoldiersP2[battlingSoldiersP2.indexOf(targetSoldier)] = null;
+              opponentSoldiers[opponentSoldiers.indexOf(targetSoldier)] = null;
             }
           }
         }
       });
     }
-    // else if (aliveEnemyWizards.length > 0) {
-    //   wizardsArray.forEach((wizard, index) => {
-    //     const targetWizard = aliveEnemyWizards[index % aliveEnemyWizards.length]; // Cycle through alive enemies
-    //     if (wizard && wizard.health > 0 && targetWizard && fireFireball) {
+    else if (aliveEnemyWizards.length > 0) {
+      wizardsArray.forEach((wizard, index) => {
+        const targetWizard = aliveEnemyWizards[index % aliveEnemyWizards.length]; // Cycle through alive enemies
+        if (wizard && wizard.health > 0 && targetWizard && fireFireball) {
 
-    //       wizard.fire(targetWizard.position.x, targetWizard.position.y, drawFireball);
-    //       if (detectCollision(wizard.fireball, targetWizard) && !wizard.collisionDetected) {
-    //         wizard.collisionDetected = true;
-    //         targetWizard.health -= 35; // Damage infliction
-    //         targetWizard.hasTakenDamage = true;
+          wizard.fire(targetWizard.position.x, targetWizard.position.y, drawFireball);
+          if (detectCollision(wizard.fireball, targetWizard) && !wizard.collisionDetected) {
+            wizard.collisionDetected = true;
+            targetWizard.health -= 35; // Damage infliction
+            targetWizard.hasTakenDamage = true;
 
-    //         // if (isDead(targetWizard)) {
-    //         //   drawFireball = false;
-    //         //   console.log(`Wizard: ${targetWizard.index} has died`);
-    //         //   if (attackerIndex % 2 === 0) {
-    //         //     armyP2[armyP2.indexOf(targetWizard)] = null;
-    //         //   } else {
-    //         //     armyP1[armyP1.indexOf(targetWizard)] = null;
-    //         //   }
-    //         //   battlingSoldiersP1[battlingSoldiersP1.indexOf(targetWizard)] = null;
-    //         //   battlingSoldiersP2[battlingSoldiersP2.indexOf(targetWizard)] = null;
-    //         // }
-    //       }
-    //     }
-    //   });
-    // }
+            if (isDead(targetWizard)) {
+              drawFireball = false;
+              console.log(`Wizard: ${targetWizard.index} has died`);
+              if (attackerIndex % 2 === 0) {
+                wizardsArrayP2[wizardsArrayP2.indexOf(targetWizard)] = null;
+              } else {
+                wizardsArrayP1[wizardsArrayP1.indexOf(targetWizard)] = null;
+              }
+              battlingWizardsP1[battlingWizardsP1.indexOf(targetWizard)] = null;
+              battlingWizardsP2[battlingWizardsP2.indexOf(targetWizard)] = null;
+              opponentWizards[opponentWizards.indexOf(targetWizard)] = null;
+            }
+          }
+        }
+      });
+    }
   };
 
   if (attackerIndex % 2 == 0) {
     attackEnemies(battlingWizardsP1, battlingSoldiersP2, battlingWizardsP2);
-
   } else {
     attackEnemies(battlingWizardsP2, battlingSoldiersP1, battlingWizardsP1);
   }
 }
+
 
 const detectCollision = (fireball, opponent) => {
   var distX = Math.abs(fireball.position.x - opponent.position.x - 40 / 2);
