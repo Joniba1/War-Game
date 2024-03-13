@@ -16,7 +16,7 @@ class Soldier {
             height: 30
         }
 
-        this.health = 100;
+        this.health = 150;
         this.isAttacking = false;
 
     }
@@ -57,10 +57,6 @@ class Soldier {
             this.position.y = targetY;
         }
     }
-
-    // attack() { //todo
-
-    // }
 
 }
 

@@ -36,6 +36,9 @@ let wizardsAddedP2 = 0;
 
 let battlingSoldiersP1 = [];
 let battlingSoldiersP2 = [];
+let battlingWizardsP1 = [];
+let battlingWizardsP2 = [];
+
 
 let battleInProgress = false;
 let firstArrival = false; //first movement flag
@@ -193,6 +196,13 @@ function attack() {
   wizardsArrayP1.forEach(wizard => {
     wizard.fireball.position.x = wizard.position.x;
     wizard.fireball.position.y = wizard.position.y;
+    wizard.collisionDetected = false;
+  });
+
+  wizardsArrayP2.forEach(wizard => {
+    wizard.fireball.position.x = wizard.position.x;
+    wizard.fireball.position.y = wizard.position.y;
+    wizard.collisionDetected = false;
   });
 
   //Turn to attack
@@ -222,8 +232,6 @@ function attack() {
     });
 
     if (attacker[i] && opponent) {
-      console.log("attack first pos", attacker[i].position.x);
-
       leap(attacker[i], 'forward');
 
       attacker[i].isAttacking = true;
@@ -234,7 +242,7 @@ function attack() {
         if (damage > opponent.health) {
           damage = opponent.health;
         }
-        opponent.health -= damage;
+        //opponent.health -= damage;
         opponent.hasTakenDamageThisRound = true;
 
         //log debug and healthbar handling
@@ -438,12 +446,8 @@ function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   renderArmy(); // Renders the army every frame
 
-  wizardsArrayP1.forEach(wizard => {
-    if (wizardOpponent && wizard && wizard.health > 0 && fireFireball) {
-      wizard.fire(wizardOpponent.position.x, wizardOpponent.position.y);
-    }
-  });
 
+  animateWizardAttacks();
 
   if (battleInProgress && !firstArrival) {
     battleFirstMovement();
@@ -454,4 +458,72 @@ function animate() {
 
 
 
+const animateWizardAttacks = () => {
+  const attackEnemies = (wizardsArray, opponentSoldiers) => {
+    const aliveEnemies = opponentSoldiers.filter(soldier => soldier && soldier.health > 0).length > 0;
+
+    if (aliveEnemies) {
+      const enemiesPerWizard = Math.ceil(opponentSoldiers.length / wizardsArray.length);
+
+      wizardsArray.forEach((wizard, index) => {
+        const startIndex = index * enemiesPerWizard;
+        const endIndex = Math.min((index + 1) * enemiesPerWizard, opponentSoldiers.length);
+        const enemiesInRange = opponentSoldiers.slice(startIndex, endIndex);
+
+        if (wizard && wizard.health > 0 && fireFireball) {
+          let targetEnemy = enemiesInRange.find(enemy => enemy && enemy.health > 0);
+          if (targetEnemy) {
+            wizard.fire(targetEnemy.position.x, targetEnemy.position.y);
+            if (detectCollision(wizard.fireball, targetEnemy) && !wizard.collisionDetected) {
+              console.log("Collision detected");
+              wizard.collisionDetected = true; // Set the flag to true to indicate collision detected
+              targetEnemy.health -= 150;
+              console.log(battlingSoldiersP1);
+
+            }
+
+
+          } else {
+            const opponent = opponentSoldiers.find(soldier => soldier && soldier.health > 0);
+            if (opponent) {
+              wizard.fire(opponent.position.x, opponent.position.y);
+            }
+          }
+        }
+      });
+    } else {
+      const opponent = opponentSoldiers.find(soldier => soldier && soldier.health > 0);
+      if (opponent) {
+        wizardsArray.forEach(wizard => {
+          if (wizard && wizard.health > 0 && fireFireball) {
+            wizard.fire(opponent.position.x, opponent.position.y);
+          }
+        });
+      }
+    }
+  };
+  if (attackerIndex % 2 == 0) {
+    attackEnemies(wizardsArrayP1, battlingSoldiersP2);
+
+  } else {
+    attackEnemies(wizardsArrayP2, battlingSoldiersP1);
+  }
+};
+
+
+function detectCollision(fireball, opponent) {
+  var distX = Math.abs(fireball.position.x - opponent.position.x - 40 / 2);
+  var distY = Math.abs(fireball.position.y - opponent.position.y - 60 / 2);
+
+  if (distX > (40 / 2 + 10)) { return false; }
+  if (distY > (60 / 2 + 10)) { return false; }
+
+  if (distX <= (40 / 2)) { return true; }
+  if (distY <= (60 / 2)) { return true; }
+
+  var dx = distX - 40 / 2;
+  var dy = distY - 60 / 2;
+  return (dx * dx + dy * dy <= (10 * 10));
+}
 animate();
+

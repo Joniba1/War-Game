@@ -45,11 +45,12 @@ class Wizard {
             this.fireball.position.y += vy;
             this.drawFireball(this.fireball.position.x, this.fireball.position.y);
 
+
         } else {
             this.fireball.x = targetX;
             this.fireball.y = targetY;
-
         }
+
     }
 
 
