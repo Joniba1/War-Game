@@ -39,7 +39,7 @@ let battlingWizardsP2 = [];
 let battleInProgress = false;
 let firstArrival = false; //first movement flag
 
-let attackerIndex = 0; //turn to attack
+let attackerIndex = 1; //turn to attack
 
 let aSoldierWasMoved = false;
 let swordsmenAddedFlag = false;
@@ -48,30 +48,54 @@ let wizardsAddedFlag = false;
 let fireballInFlight = false;
 let fireFireball = false;
 
+let firstThrust = true;
+
+const thrust = () => {
+  troopsNumberSoldierP1.switchSprites('thrust');
+}
 
 //Troops left indicators
 const troopsNumberSoldierP1 = new Soldier(-1, {
-  position: { x: canvas.width - 250, y: 70 },
+  position: { x: canvas.width - 270, y: 70 },
   velocity: { x: 0, y: 0 },
   offset: { x: -30, y: 0 },
-  imageSrc: 'idleTransparent.png',
+  imageSrc: 'assets/idle.png',
   framesMax: 5,
-  scale: 0.4
+  scale: 0.4,
+  sprites: {
+    idle: {
+      imageSrc: 'assets/idle.png',
+      framesMax: 5
+    },
+    thrust: {
+      imageSrc: 'assets/thrust.png',
+      framesMax: 8
+    }
+  }
 });
 
 const troopsNumberSoldierP2 = new Soldier(-2, {
-  position: { x: 65, y: 70 },
+  position: { x: 50, y: 70 },
   velocity: { x: 0, y: 0 },
-  offset: { x: -30, y: 0 }
+  offset: { x: -30, y: 0 },
+  imageSrc: 'assets/idle.png',
+  framesMax: 5,
+  scale: 0.4,
+  sprites: {
+    idle: {
+      imageSrc: 'assets/idle.png',
+      framesMax: 5
+    }
+  }
 });
 
-const troopsNumberWizardP1 = new Wizard(-1, {
-  position: { x: canvas.width - 250, y: 150 }
-});
+// const troopsNumberWizardP1 = new Wizard(-1, {
+//   position: { x: canvas.width - 250, y: 150 }
+// });
 
-const troopsNumberWizardP2 = new Wizard(-1, {
-  position: { x: 65, y: 150 }
-});
+// const troopsNumberWizardP2 = new Wizard(-1, {
+//   position: { x: 65, y: 150 }
+// });
 
 
 
@@ -84,7 +108,24 @@ const initializeArmies = () => {
     const soldierP1 = new Soldier(i, {
       position: { x: 0, y: posY },
       velocity: { x: 4, y: 4 },
-      offset: { x: -30, y: 0 }
+      offset: { x: -30, y: 0 },
+      imageSrc: 'assets/idleMirrored.png',
+      framesMax: 5,
+      scale: 0.4,
+      sprites: {
+        idle: {
+          imageSrc: 'assets/idleMirrored.png',
+          framesMax: 5
+        },
+        walk: {
+          imageSrc: 'assets/walkMirrored.png',
+          framesMax: 6,
+        },
+        thrust: {
+          imageSrc: 'assets/thrust.png',
+          framesMax: 8
+        }
+      }
     });
     armyP1.push(soldierP1);
 
@@ -92,7 +133,24 @@ const initializeArmies = () => {
     const soldierP2 = new Soldier(i, {
       position: { x: 0, y: posY },
       velocity: { x: 4, y: 4 },
-      offset: { x: 0, y: 0 }
+      offset: { x: 0, y: 0 },
+      imageSrc: 'assets/idle.png',
+      framesMax: 5,
+      scale: 0.4,
+      sprites: {
+        idle: {
+          imageSrc: 'assets/idle.png',
+          framesMax: 5
+        },
+        walk: {
+          imageSrc: 'assets/walk.png',
+          framesMax: 6,
+        },
+        thrust: {
+          imageSrc: 'assets/thrust.png',
+          framesMax: 8
+        }
+      }
     });
     armyP2.push(soldierP2);
 
@@ -175,22 +233,29 @@ const addWizard = (playerIndex) => {
 }
 
 const battleFirstMovement = () => {
-
   if (!firstArrival) {
     spacing = 65;
     // Battling troops movement
     for (let i = 0; i < battlingSoldiersP1.length; i++) {
       soldier = armyP1[i];
       soldier.update(canvas.width / 2 + spacing, soldier.position.y);
+      soldier.switchSprites('walk');
+
     }
     for (let i = 0; i < battlingSoldiersP2.length; i++) {
       soldier = armyP2[i];
       soldier.update(canvas.width / 2 - spacing, soldier.position.y);
+      soldier.switchSprites('walk');
     }
 
     if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) { //if the soldiers have reached their destination
       firstArrival = true;
-      console.log(armyP1[0].position.x, armyP2[0].position.x);
+      battlingSoldiersP1.forEach(soldier => {
+        soldier.switchSprites('idle');
+      });
+      battlingSoldiersP2.forEach(soldier => {
+        soldier.switchSprites('idle');
+      });
       attack();
     }
   }
@@ -238,9 +303,11 @@ const attack = () => {
     });
 
     if (attacker[i] && opponent) {
-      leap(attacker[i], 'forward');
+      //leap(attacker[i], 'forward');
 
       attacker[i].isAttacking = true;
+      attacker[i].switchSprites('thrust');
+
 
       // Apply damage
       if (opponent && !opponent.hasTakenDamageThisRound && !isDead(opponent)) {
@@ -286,11 +353,12 @@ const attack = () => {
       attacker.forEach(soldier => {
         if (soldier) {
           soldier.isAttacking = false;
-          leap(soldier, 'backward');
+          //soldier.switchSprites('idle');
+          //leap(soldier, 'backward');
         }
       });
     }
-  }, 400);
+  }, 5000);
 
   setTimeout(() => {
     defender.forEach(soldier => {
@@ -371,20 +439,32 @@ const reArrangeSoldiers = (battlingSoldiersP1, battlingSoldiersP2) => { //get th
 
 const background = new Sprite({
   position: { x: 0, y: 0 },
-  imageSrc: 'img/background.png'
+  imageSrc: 'assets/background.png'
 });
 
 const renderArmy = () => {
   background.update();
-  troopsNumberSoldierP1.draw('red');
-  troopsNumberSoldierP2.draw('green');
-  troopsNumberWizardP1.draw();
-  troopsNumberWizardP2.draw();
+  troopsNumberSoldierP1.update(troopsNumberSoldierP1.position.x, troopsNumberSoldierP1.position.y);
+  troopsNumberSoldierP2.update(troopsNumberSoldierP2.position.x, troopsNumberSoldierP2.position.y);
+
+  // troopsNumberWizardP1.draw();
+  // troopsNumberWizardP2.draw();
+
+  if (troopsNumberSoldierP1.framesElapsed === 30) {
+    troopsNumberSoldierP1.switchSprites('idle');
+  }
+
 
   if (swordsmenAddedFlag) {
     for (let i = 0; i < battlingSoldiersP1.length; i++) {
       if (armyP1[i]) {
-        armyP1[i].draw('red');
+        armyP1[i].update(armyP1[i].position.x, armyP1[i].position.y);
+
+
+        if (firstArrival && armyP1[i].framesElapsed === 30) {
+          armyP1[i].switchSprites('idle');
+          armyP1[i].framesElapsed = 0;
+        }
 
         //debugging text
         ctx.fillStyle = "black";
@@ -396,7 +476,12 @@ const renderArmy = () => {
     for (let i = 0; i < battlingSoldiersP2.length; i++) {
 
       if (armyP2[i]) {
-        armyP2[i].draw('green');
+        armyP2[i].update(armyP2[i].position.x, armyP2[i].position.y);
+
+        if (firstArrival && armyP2[i].framesElapsed === 30) {
+          armyP2[i].switchSprites('idle');
+          armyP2[i].framesElapsed = 0;
+        }
 
         //debugging text
         ctx.fillStyle = "black";
@@ -422,26 +507,26 @@ const renderArmy = () => {
   }
 }
 
-const leap = (soldier, direction) => {
-  let targetX;
-  if (soldier) {
-    if (attackerIndex % 2 === 0) {
-      targetX = direction === 'forward' ? soldier.position.x - 60 : 1015;
-    } else {
-      targetX = direction === 'forward' ? soldier.position.x + 60 : 885;
-    }
+// const leap = (soldier, direction) => {
+//   let targetX;
+//   if (soldier) {
+//     if (attackerIndex % 2 === 0) {
+//       targetX = direction === 'forward' ? soldier.position.x - 60 : 1015;
+//     } else {
+//       targetX = direction === 'forward' ? soldier.position.x + 60 : 885;
+//     }
 
-    //Leap animation
-    const moveSoldier = () => {
-      if (soldier.position.x !== targetX) {
-        soldier.update(targetX, soldier.position.y);
-        requestAnimationFrame(moveSoldier);
-      }
-    }
-    moveSoldier();
+//     //Leap animation
+//     const moveSoldier = () => {
+//       if (soldier.position.x !== targetX) {
+//         soldier.update(targetX, soldier.position.y);
+//         requestAnimationFrame(moveSoldier);
+//       }
+//     }
+//     moveSoldier();
 
-  }
-}
+//   }
+// }
 
 const isDead = (soldier) => {
   if (soldier && soldier.health > 0) {
@@ -553,7 +638,6 @@ const animateWizardAttacks = () => {
   }
 }
 
-
 const detectCollision = (fireball, opponent) => {
   var distX = Math.abs(fireball.position.x - opponent.position.x - 40 / 2);
   var distY = Math.abs(fireball.position.y - opponent.position.y - 60 / 2);
@@ -568,5 +652,6 @@ const detectCollision = (fireball, opponent) => {
   var dy = distY - 60 / 2;
   return (dx * dx + dy * dy <= (10 * 10));
 }
+
 animate();
 

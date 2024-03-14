@@ -1,13 +1,11 @@
 class Soldier extends Sprite {
-    constructor(index, { position, velocity, offset, imageSrc, scale = 1, framesMax = 1 }) {
+    constructor(index, { position, velocity, offset, imageSrc, scale = 1, framesMax = 1, sprites }) {
 
         super({
             position,
             imageSrc,
             scale,
             framesMax,
-            offset
-            
         });
 
         this.index = index;
@@ -31,8 +29,14 @@ class Soldier extends Sprite {
 
         this.framesCurrent = 0;
         this.framesElapsed = 0;
-        this.frameshold = 5; //Animation's speed
+        this.framesHold = 9; //Animation's speed
+        this.sprites = sprites;
 
+        for (const sprite in sprites) {
+            sprites[sprite].image = new Image();
+            sprites[sprite].image.src = sprites[sprite].imageSrc;
+
+        }
     }
 
     // draw(soldierColor) { //temp var
@@ -49,6 +53,8 @@ class Soldier extends Sprite {
     // }
 
     update(targetX, targetY) {
+        this.draw();
+        this.animateFrames();
 
         this.attackbox.position.x = this.position.x + this.attackbox.offset.x;
         this.attackbox.position.y = this.position.y;

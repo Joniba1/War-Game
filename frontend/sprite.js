@@ -1,5 +1,5 @@
 class Sprite {
-    constructor({ position, imageSrc, scale = 1, framesMax = 1, offset = { x: 0, y: 0 } }) {
+    constructor({ position, imageSrc, scale = 1, framesMax = 1 }) {
         this.position = position;
         this.width = 40;
         this.height = 60;
@@ -9,10 +9,42 @@ class Sprite {
         this.framesMax = framesMax;
         this.framesCurrent = 0;
         this.framesElapsed = 0;
-        this.frameshold = 5; //Animation's speed
-        this.offset = offset;
+        this.framesHold = 5; //Animation's speed
+        this.thrustFramesElapsed = 0;
+        this.currentSprite = 'idle';
+    }
 
+    switchSprites(sprite) {
+        switch (sprite) {
+            case 'idle':
+                if (this.image !== this.sprites.idle.image) {
+                    this.image = this.sprites.idle.image;
+                    this.framesMax = this.sprites.idle.framesMax;
+                    this.framesCurrent = 0;
+                    this.currentSprite = 'idle';
 
+                }
+                break;
+            case 'walk':
+                if (this.image !== this.sprites.walk.image) {
+                    this.image = this.sprites.walk.image;
+                    this.framesMax = this.sprites.walk.framesMax;
+                    this.framesCurrent = 0;
+                    this.currentSprite = 'walk';
+
+                }
+                break;
+            case 'thrust':
+                if (this.image !== this.sprites.thrust.image) {
+                    this.image = this.sprites.thrust.image;
+                    this.framesMax = this.sprites.thrust.framesMax;
+                    this.framesElapsed = 0;
+                    this.thrustFramesElapsed = 0;
+                    this.framesHold = 5; //Animation's speed
+                    this.currentSprite = 'thrust';
+                }
+                break;
+        }
     }
 
     draw() {
@@ -22,24 +54,15 @@ class Sprite {
             0,
             this.image.width / this.framesMax,
             this.image.height,
-            this.position.x - this.offset.x,
-            this.position.y - this.offset.y,
+            this.position.x,
+            this.position.y,
             (this.image.width / this.framesMax) * this.scale,
             this.image.height * this.scale);
     }
 
     update() {
         this.draw();
-        this.framesElapsed++;
-        if (this.framesElapsed % this.frameshold === 0) {
-            if (this.framesCurrent < this.framesMax - 1) {
-                this.framesCurrent++;
-            }
-            else {
-                this.framesCurrent = 0;
-
-            }
-        }
+        this.animateFrames();
     }
 
     setSource(imageSrc) {
@@ -50,6 +73,17 @@ class Sprite {
         ctx.drawImage(this.image, 0, 0, canvasWidth, canvasHeight);
     }
 
+    animateFrames() {
+        this.framesElapsed++;
+        // Check if it's time to change frames
+        if (this.framesElapsed % this.framesHold === 0) {
+            // Change frames
+            if (this.framesCurrent < this.framesMax - 1) {
+                this.framesCurrent++;
+            } else {
+                this.framesCurrent = 0;
+            }
+        }
+    }
 }
-
 
