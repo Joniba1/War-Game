@@ -53,7 +53,10 @@ let fireFireball = false;
 const troopsNumberSoldierP1 = new Soldier(-1, {
   position: { x: canvas.width - 250, y: 70 },
   velocity: { x: 0, y: 0 },
-  offset: { x: -30, y: 0 }
+  offset: { x: -30, y: 0 },
+  imageSrc: 'idleTransparent.png',
+  framesMax: 5,
+  scale: 0.4
 });
 
 const troopsNumberSoldierP2 = new Soldier(-2, {
@@ -366,12 +369,13 @@ const reArrangeSoldiers = (battlingSoldiersP1, battlingSoldiersP2) => { //get th
   }
 }
 
-const background = new Sprite();
-background.setSource('img/background.png');
+const background = new Sprite({
+  position: { x: 0, y: 0 },
+  imageSrc: 'img/background.png'
+});
 
 const renderArmy = () => {
-  background.drawBackground(ctx, canvas.width, canvas.height);
-
+  background.update();
   troopsNumberSoldierP1.draw('red');
   troopsNumberSoldierP2.draw('green');
   troopsNumberWizardP1.draw();

@@ -1,8 +1,18 @@
-class Soldier {
-    constructor(index, { position, velocity, offset }) {
+class Soldier extends Sprite {
+    constructor(index, { position, velocity, offset, imageSrc, scale = 1, framesMax = 1 }) {
+
+        super({
+            position,
+            imageSrc,
+            scale,
+            framesMax,
+            offset
+            
+        });
+
         this.index = index;
 
-        this.position = position;
+        //this.position = position
         this.velocity = velocity;
 
         //attack
@@ -19,21 +29,24 @@ class Soldier {
         this.health = 150;
         this.isAttacking = false;
 
+        this.framesCurrent = 0;
+        this.framesElapsed = 0;
+        this.frameshold = 5; //Animation's speed
+
     }
 
+    // draw(soldierColor) { //temp var
+    //     ctx.beginPath();
+    //     ctx.fillStyle = soldierColor;
+    //     ctx.fillRect(this.position.x, this.position.y, 40, 60);
 
-    draw(soldierColor) { //temp var
-        ctx.beginPath();
-        ctx.fillStyle = soldierColor;
-        ctx.fillRect(this.position.x, this.position.y, 40, 60);
-
-        //attackbox
-        if (this.isAttacking) {
-            ctx.beginPath();
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(this.attackbox.position.x, this.attackbox.position.y, this.attackbox.width, this.attackbox.height);
-        }
-    }
+    //     //attackbox
+    //     if (this.isAttacking) {
+    //         ctx.beginPath();
+    //         ctx.fillStyle = 'blue';
+    //         ctx.fillRect(this.attackbox.position.x, this.attackbox.position.y, this.attackbox.width, this.attackbox.height);
+    //     }
+    // }
 
     update(targetX, targetY) {
 
