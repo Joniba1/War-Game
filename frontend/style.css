@@ -1,12 +1,14 @@
 #P1-Army-Header {
     position: absolute;
     left: 70px;
+    color: white;
     top: 0px;
 }
 
 #P2-Army-Header {
     position: absolute;
     right: 56px;
+    color: white;
     top: 0px;
 }
 
@@ -50,26 +52,34 @@
 /* Swordsmen */
 #SwordsmenP1 {
     position: absolute;
-    right: 7%;
-    top: 70px;
+    left: 8.45%;
+    top: 80px;
+    color: white;
+    font-size: 20px;
 }
 
 #SwordsmenP2 {
     position: absolute;
-    left: 6.3%;
-    top: 70px;
+    right: 3.9%;
+    color: white;
+    font-size: 20px;
+    top: 80px;
 }
 
 #SwordsmenLeftNumberP1 {
     position: absolute;
-    right: 10.74%;
-    top: 90px;
+    left: 8.45%;
+    top: 110px;
+    color: white;
+    font-size: 20px;
 }
 
 #SwordsmenLeftNumberP2 {
     position: absolute;
-    left: 6.3%;
-    top: 90px;
+    right:8.6%;
+    color: white;
+    font-size: 20px;
+    top: 110px;
 }
 
 /* Wizards */

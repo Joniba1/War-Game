@@ -104,33 +104,7 @@ const initializeArmies = () => {
 
   //Initialize swordsmen
   for (let i = 0; i < armySize; i++) {
-    // Create soldier for armyP1
     const soldierP1 = new Soldier(i, {
-      position: { x: 0, y: posY },
-      velocity: { x: 4, y: 4 },
-      offset: { x: -30, y: 0 },
-      imageSrc: 'assets/idleMirrored.png',
-      framesMax: 5,
-      scale: 0.4,
-      sprites: {
-        idle: {
-          imageSrc: 'assets/idleMirrored.png',
-          framesMax: 5
-        },
-        walk: {
-          imageSrc: 'assets/walkMirrored.png',
-          framesMax: 6,
-        },
-        thrust: {
-          imageSrc: 'assets/thrust.png',
-          framesMax: 8
-        }
-      }
-    });
-    armyP1.push(soldierP1);
-
-    // Create soldier for armyP2
-    const soldierP2 = new Soldier(i, {
       position: { x: 0, y: posY },
       velocity: { x: 4, y: 4 },
       offset: { x: 0, y: 0 },
@@ -152,7 +126,33 @@ const initializeArmies = () => {
         }
       }
     });
+    armyP1.push(soldierP1);
+
+    const soldierP2 = new Soldier(i, {
+      position: { x: 0, y: posY },
+      velocity: { x: 4, y: 4 },
+      offset: { x: -30, y: 0 },
+      imageSrc: 'assets/idleMirrored.png',
+      framesMax: 5,
+      scale: 0.4,
+      sprites: {
+        idle: {
+          imageSrc: 'assets/idleMirrored.png',
+          framesMax: 5
+        },
+        walk: {
+          imageSrc: 'assets/walkMirrored.png',
+          framesMax: 6,
+        },
+        thrust: {
+          imageSrc: 'assets/thrustMirrored.png',
+          framesMax: 8
+        }
+      }
+    });
     armyP2.push(soldierP2);
+
+
 
     // Adjusting posY for next soldier
     posY += spacing;
@@ -180,7 +180,7 @@ const addSwordsman = (playerIndex) => {
   swordsmenAddedFlag = true;
   if (playerIndex === 1) {
     soldier = armyP1[battlingSoldiersP1.length];
-    soldier.position.x = canvas.width - canvas.width / 3;
+    soldier.position.x = canvas.width / 3;
     soldier.update(soldier.position.x, soldier.position.y) //in order for the attack box to follow 
     battlingSoldiersP1.push(soldier);
 
@@ -189,7 +189,7 @@ const addSwordsman = (playerIndex) => {
   }
   else if (playerIndex === 2) {
     soldier = armyP2[battlingSoldiersP2.length];
-    soldier.position.x = canvas.width / 3;
+    soldier.position.x = canvas.width - canvas.width / 3;
     soldier.update(soldier.position.x, soldier.position.y)
     battlingSoldiersP2.push(soldier);
 
@@ -238,17 +238,17 @@ const battleFirstMovement = () => {
     // Battling troops movement
     for (let i = 0; i < battlingSoldiersP1.length; i++) {
       soldier = armyP1[i];
-      soldier.update(canvas.width / 2 + spacing, soldier.position.y);
+      soldier.update(canvas.width / 2 - spacing, soldier.position.y);
       soldier.switchSprites('walk');
 
     }
     for (let i = 0; i < battlingSoldiersP2.length; i++) {
       soldier = armyP2[i];
-      soldier.update(canvas.width / 2 - spacing, soldier.position.y);
+      soldier.update(canvas.width / 2 + spacing, soldier.position.y);
       soldier.switchSprites('walk');
     }
 
-    if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 + spacing) { //if the soldiers have reached their destination
+    if (battlingSoldiersP1[battlingSoldiersP1.length - 1].position.x == canvas.width / 2 - spacing) { //if the soldiers have reached their destination
       firstArrival = true;
       battlingSoldiersP1.forEach(soldier => {
         soldier.switchSprites('idle');
@@ -321,10 +321,11 @@ const attack = () => {
         //log debug and healthbar handling
         if (attackerIndex % 2 == 0) {
           console.log(`P2: ${opponent.index} health: ${opponent.health}`);
-          healthBarP1.value -= damage;
+          healthBarP2.value -= damage;
         } else {
           console.log(`P1: ${opponent.index} health: ${opponent.health}`);
-          healthBarP2.value -= damage;
+          healthBarP1.value -= damage;
+
         }
 
 

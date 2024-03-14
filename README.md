@@ -1,16 +1,15 @@
 # Turn-Based Combat Game
 
-In this turn-based combat game, each player commands an army (currently rectangles) and deploys a desired number of troops to battle against the opponent's unknown forces (hopefully, as both players are using same page).
+In this turn-based combat game, each player commands an army and deploys a desired number of troops to battle against the opponent's forces.
 
 ## 
 
-I have numerous general ideas for the core mechanics of the game.
+The game logic is quite simple. Each player has buttons controlling the amount of each type of troops they'd like to send to battle. When both players are done, click the Battle! button and the center of the screen and watch the battlfield.
 
-- Damage will be based on ranks and random functions respectively. Lower-rank soldiers will have a slim chance of defeating higher-rank ones due to their obvious differences in dps and hp. However, once an opponent is defeated, they'll provide assistance to their comrades, resulting in approximately double the damage to the remaining opponent's troops.
+-damage is randomized, but the type of the troop is taken into consideration.
 
-- I also plan to add different types of troops based on their rank, such as foot troops, archers, and potentially mages or tanks (giants or so) in the future.
+-As for today the armies contain swordsmen and wizards. I figured ill add healers or some kind of other supporter quite late since its really simple and I prefer to finallize some more commplex stuff right not.
 
-While I haven't gotten around to implementing animations and textures just yet, I plan to add them eventually and make the game more interactive.
-
+-currently im halfway through the proccess of implementing animations and textures.
  
 Ik the directories are wrong, ill change them eventually
