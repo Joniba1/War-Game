@@ -9,22 +9,9 @@ class Soldier extends Sprite {
         });
 
         this.index = index;
-
-        //this.position = position
         this.velocity = velocity;
 
-        //attack
-        this.attackbox = {
-            position: {
-                x: this.position.x,
-                y: this.position.y
-            },
-            offset,
-            width: 70,
-            height: 30
-        }
-
-        this.health = 150;
+        this.health = 100;
         this.isAttacking = false;
 
         this.framesCurrent = 0;
@@ -39,25 +26,9 @@ class Soldier extends Sprite {
         }
     }
 
-    // draw(soldierColor) { //temp var
-    //     ctx.beginPath();
-    //     ctx.fillStyle = soldierColor;
-    //     ctx.fillRect(this.position.x, this.position.y, 40, 60);
-
-    //     //attackbox
-    //     if (this.isAttacking) {
-    //         ctx.beginPath();
-    //         ctx.fillStyle = 'blue';
-    //         ctx.fillRect(this.attackbox.position.x, this.attackbox.position.y, this.attackbox.width, this.attackbox.height);
-    //     }
-    // }
-
     update(targetX, targetY) {
         this.draw();
         this.animateFrames();
-
-        this.attackbox.position.x = this.position.x + this.attackbox.offset.x;
-        this.attackbox.position.y = this.position.y;
 
         const dx = targetX - this.position.x;
         const dy = targetY - this.position.y;

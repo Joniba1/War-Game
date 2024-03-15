@@ -86,7 +86,7 @@
 #WizardsP1 {
     position: absolute;
     left: 8.5%;
-    top: 150px;
+    top: 205px;
     color: white;
     font-size: 20px;
 
@@ -95,7 +95,7 @@
 #WizardsP2 {
     position: absolute;
     right: 9.5%;
-    top: 150px;
+    top: 205px;
     color: white;
     font-size: 20px;
 }
@@ -103,7 +103,7 @@
 #WizardsLeftNumberP1 {
     position: absolute;
     left: 8.7%;
-    top: 178px;
+    top: 233px;
     color: white;
     font-size: 20px;
 }
@@ -111,7 +111,7 @@
 #WizardsLeftNumberP2 {
     position: absolute;
     right: 12.5%;
-    top: 178px;
+    top: 233px;
     color: white;
     font-size: 20px;
 }

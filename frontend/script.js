@@ -60,6 +60,11 @@ const thrust = (index) => {
 
 }
 
+let fireballbutton = false;
+const fireball = () => {
+    fireballbutton = true;
+}
+
 //Troops left indicators
 const troopsNumberSoldierP1 = new Soldier(-1, {
     position: { x: 50, y: 70 },
@@ -71,7 +76,6 @@ const troopsNumberSoldierP1 = new Soldier(-1, {
     sprites: {
         idle: {
             imageSrc: 'assets/idle.png',
-
             framesMax: 5
         },
         thrust: {
@@ -109,7 +113,9 @@ const troopsNumberWizardP1 = new Wizard(-1, {
         idle: {
             imageSrc: 'assets/mageIdle.png',
             framesMax: 6
-        }
+        },
+        fireballSrc: 'assets/Fireball/Fireball.png'
+
     }
 });
 
@@ -122,7 +128,8 @@ const troopsNumberWizardP2 = new Wizard(-1, {
         idle: {
             imageSrc: 'assets/mageIdleMirrored.png',
             framesMax: 6
-        }
+        },
+        fireballSrc: 'assets/Fireball/FireballMirrored.png'
     }
 });
 
@@ -197,7 +204,8 @@ const initializeArmies = () => {
                     imageSrc: 'assets/mageIdle.png',
                     framesMax: 6
                 }
-            }
+            },
+            fireballSrc: 'assets/Fireball/Fireball.png'
         });
         wizardsArrayP1.push(wizardP1);
 
@@ -211,7 +219,8 @@ const initializeArmies = () => {
                     imageSrc: 'assets/mageIdleMirrored.png',
                     framesMax: 6
                 }
-            }
+            },
+            //fireballSrc: 'assets/Fireball/FireballMirrored.png'
         });
         wizardsArrayP2.push(wizardP2);
         posY += spacing;
@@ -306,15 +315,18 @@ const battleFirstMovement = () => {
 const attack = () => {
     drawFireball = true;
     wizardsArrayP1.forEach(wizard => {
-        wizard.fireball.position.x = wizard.position.x;
-        wizard.fireball.position.y = wizard.position.y;
+        if (wizard.fireball != null) {
+            wizard.fireball.position.x = wizard.position.x;
+            wizard.fireball.position.y = wizard.position.y + 55;
+        }
+
         wizard.collisionDetected = false;
         wizard.hasTakenDamage = false;
     });
 
     wizardsArrayP2.forEach(wizard => {
         wizard.fireball.position.x = wizard.position.x;
-        wizard.fireball.position.y = wizard.position.y;
+        wizard.fireball.position.y = wizard.position.y + 55;
         wizard.collisionDetected = false;
         wizard.hasTakenDamage = false;
     });
@@ -471,7 +483,6 @@ const reArrangeSoldiers = (battlingSoldiersP1, battlingSoldiersP2) => { //get th
             for (let i = 0; i < armyP1.length; i++) {
                 if (armyP1[i] === idleSoldierP1 && armyP1[i].position.y !== targetY) {
                     armyP1[i].position.y = targetY;
-                    armyP1[i].attackbox.position.y = armyP1[i].position.y;
                     console.log(`Soldier ${armyP1[i].index} was moved`);
                     aSoldierWasMoved = true;
                 }
@@ -495,13 +506,16 @@ const renderArmy = () => {
     troopsNumberWizardP1.update();
     troopsNumberWizardP2.update();
 
+    //troopsNumberWizardP1.fire(0, troopsNumberWizardP1.position.y, true);
+
+
+    //debugging - REMOVE    
     if (troopsNumberSoldierP1.framesElapsed === 40) {
         troopsNumberSoldierP1.switchSprites('idle');
 
     }
     if (troopsNumberSoldierP2.framesElapsed === 35) {
         troopsNumberSoldierP2.switchSprites('idle');
-
     }
 
 
@@ -556,26 +570,26 @@ const renderArmy = () => {
     }
 }
 
-const leap = (soldier, direction) => {
-    let targetX;
-    if (soldier) {
-        if (attackerIndex % 2 === 0) {
-            targetX = direction === 'forward' ? soldier.position.x - 60 : 1015;
-        } else {
-            targetX = direction === 'forward' ? soldier.position.x + 60 : 885;
-        }
+// const leap = (soldier, direction) => {
+//     let targetX;
+//     if (soldier) {
+//         if (attackerIndex % 2 === 0) {
+//             targetX = direction === 'forward' ? soldier.position.x - 60 : 1015;
+//         } else {
+//             targetX = direction === 'forward' ? soldier.position.x + 60 : 885;
+//         }
 
-        //Leap animation
-        const moveSoldier = () => {
-            if (soldier.position.x !== targetX) {
-                soldier.update(targetX, soldier.position.y);
-                requestAnimationFrame(moveSoldier);
-            }
-        }
-        moveSoldier();
+//         //Leap animation
+//         const moveSoldier = () => {
+//             if (soldier.position.x !== targetX) {
+//                 soldier.update(targetX, soldier.position.y);
+//                 requestAnimationFrame(moveSoldier);
+//             }
+//         }
+//         moveSoldier();
 
-    }
-}
+//     }
+// }
 
 const isDead = (soldier) => {
     if (soldier && soldier.health > 0) {
@@ -617,6 +631,9 @@ const animateWizardAttacks = () => {
             wizardsArray.forEach((wizard, index) => {
                 const targetSoldier = aliveSoldiers[index % aliveSoldiers.length]; // Cycle through alive enemies
                 if (wizard && wizard.health > 0 && targetSoldier && fireFireball && targetSoldier.health > 0) {
+                    console.log(`position x: ${targetSoldier.position.x}`);
+                    console.log(`position y: ${targetSoldier.position.y}`);
+
                     wizard.fire(targetSoldier.position.x, targetSoldier.position.y, drawFireball);
                     if (detectCollision(wizard.fireball, targetSoldier) && !wizard.collisionDetected) {
                         wizard.collisionDetected = true;
@@ -655,8 +672,8 @@ const animateWizardAttacks = () => {
             wizardsArray.forEach((wizard, index) => {
                 const targetWizard = aliveEnemyWizards[index % aliveEnemyWizards.length]; // Cycle through alive enemies
                 if (wizard && wizard.health > 0 && targetWizard && fireFireball) {
-
                     wizard.fire(targetWizard.position.x, targetWizard.position.y, drawFireball);
+
                     if (detectCollision(wizard.fireball, targetWizard) && !wizard.collisionDetected) {
                         wizard.collisionDetected = true;
                         targetWizard.health -= 35; // Damage infliction
@@ -686,6 +703,7 @@ const animateWizardAttacks = () => {
         attackEnemies(battlingWizardsP2, battlingSoldiersP1, battlingWizardsP1);
     }
 }
+
 
 const detectCollision = (fireball, opponent) => {
     var distX = Math.abs(fireball.position.x - opponent.position.x - 40 / 2);
