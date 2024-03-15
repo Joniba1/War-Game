@@ -1,5 +1,14 @@
-class Wizard {
-    constructor(index, { position }) {
+class Wizard extends Sprite {
+    constructor(index, { position, imageSrc, scale = 1, framesMax = 1, sprites }) {
+        super({
+            position,
+            imageSrc,
+            scale,
+            framesMax,
+        });
+
+
+
         this.index = index;
         this.position = position;
 
@@ -12,14 +21,27 @@ class Wizard {
         }
 
         this.health = 70;
+
+
+        this.framesCurrent = 0;
+        this.framesElapsed = 0;
+        this.framesHold = 9; //Animation's speed
+        this.sprites = sprites;
+
+        for (const sprite in sprites) {
+            sprites[sprite].image = new Image();
+            sprites[sprite].image.src = sprites[sprite].imageSrc;
+
+        }
+
     }
 
 
-    draw() {
-        ctx.beginPath();
-        ctx.fillStyle = 'pink';
-        ctx.fillRect(this.position.x, this.position.y, 40, 60);
-    }
+    // draw() {
+    //     ctx.beginPath();
+    //     ctx.fillStyle = 'pink';
+    //     ctx.fillRect(this.position.x, this.position.y, 40, 60);
+    // }
 
     drawFireball(x, y) {
         ctx.beginPath();
@@ -46,13 +68,18 @@ class Wizard {
             if (drawFireball) {
                 this.drawFireball(this.fireball.position.x, this.fireball.position.y);
             }
-        } else {;
+        } else {
+            ;
             this.fireball.x = targetX;
             this.fireball.y = targetY;
         }
 
     }
 
+    update() {
+        this.draw();
+        this.animateFrames();
+    }
 
     // Modify the fire method of the wizard to enqueue the fireball action
     // fire(targetX, targetY) {

@@ -9,7 +9,7 @@ class Sprite {
         this.framesMax = framesMax;
         this.framesCurrent = 0;
         this.framesElapsed = 0;
-        this.framesHold = 5; //Animation's speed
+        this.framesHold = 1; //Animation's speed
         this.thrustFramesElapsed = 0;
         this.currentSprite = 'idle';
     }

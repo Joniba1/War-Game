@@ -52,7 +52,7 @@
 /* Swordsmen */
 #SwordsmenP1 {
     position: absolute;
-    left: 8.45%;
+    left: 8.6%;
     top: 80px;
     color: white;
     font-size: 20px;
@@ -60,7 +60,7 @@
 
 #SwordsmenP2 {
     position: absolute;
-    right: 3.9%;
+    right: 8%;
     color: white;
     font-size: 20px;
     top: 80px;
@@ -68,7 +68,7 @@
 
 #SwordsmenLeftNumberP1 {
     position: absolute;
-    left: 8.45%;
+    left: 8.6%;
     top: 110px;
     color: white;
     font-size: 20px;
@@ -76,7 +76,7 @@
 
 #SwordsmenLeftNumberP2 {
     position: absolute;
-    right:8.6%;
+    right: 12.5%;
     color: white;
     font-size: 20px;
     top: 110px;
@@ -85,26 +85,35 @@
 /* Wizards */
 #WizardsP1 {
     position: absolute;
-    right: 8.3%;
+    left: 8.5%;
     top: 150px;
+    color: white;
+    font-size: 20px;
+
 }
 
 #WizardsP2 {
     position: absolute;
-    left: 6.3%;
+    right: 9.5%;
     top: 150px;
+    color: white;
+    font-size: 20px;
 }
 
 #WizardsLeftNumberP1 {
     position: absolute;
-    right: 10.74%;
-    top: 170px;
+    left: 8.7%;
+    top: 178px;
+    color: white;
+    font-size: 20px;
 }
 
 #WizardsLeftNumberP2 {
     position: absolute;
-    left: 6.3%;
-    top: 170px;
+    right: 12.5%;
+    top: 178px;
+    color: white;
+    font-size: 20px;
 }
 
 .battle {
