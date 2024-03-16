@@ -48,6 +48,14 @@
     background-color: #ccc;
 }
 
+.battle {
+    position: absolute;
+    top: 22px;
+    width: 120px;
+    height: 50px;
+    left: 48%;
+    font-size: 20px;
+}
 
 /* Swordsmen */
 #SwordsmenP1 {
@@ -81,6 +89,7 @@
     font-size: 20px;
     top: 110px;
 }
+
 
 /* Wizards */
 #WizardsP1 {
@@ -116,11 +125,3 @@
     font-size: 20px;
 }
 
-.battle {
-    position: absolute;
-    top: 22px;
-    width: 120px;
-    height: 50px;
-    left: 48%;
-    font-size: 20px;
-}
