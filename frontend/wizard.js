@@ -1,5 +1,5 @@
 class Wizard extends Sprite {
-    constructor(index, { position, imageSrc, scale = 1, framesMax = 1, sprites }) {
+    constructor(index, { position, imageSrc, scale = 1, framesMax = 1, sprites, fireballSrc }) {
         super({
             position,
             imageSrc,
@@ -15,12 +15,13 @@ class Wizard extends Sprite {
         this.framesElapsed = 0;
         this.framesHold = 9; // Animation's speed
         this.sprites = sprites;
+        this.fireballSrc = fireballSrc;
 
         // You can create a fireball instance when needed
         this.fireball = new Fireball(
             { x: this.position.x, y: this.position.y }, //Start position
             10, //Velocity
-            'assets/Fireball/Fireball.png', //ImageSrc
+            this.fireballSrc, //ImageSrc
             5, //FramesMax
             0.5)   //Scale
     }
