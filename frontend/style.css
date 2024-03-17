@@ -58,7 +58,7 @@
     font-size: 20px;
 }
 
-#addKnightP1{   
+#addKnightP1 {
     position: absolute;
     top: 700px;
     width: 120px;
@@ -67,7 +67,7 @@
     font-size: 20px;
 }
 
-#addKnightP2{
+#addKnightP2 {
     position: absolute;
     top: 700px;
     width: 120px;
@@ -85,7 +85,7 @@
     font-size: 20px;
 }
 
-#addWizardP2{
+#addWizardP2 {
     position: absolute;
     top: 770px;
     width: 120px;
@@ -94,7 +94,9 @@
     font-size: 20px;
 }
 
-#lightningP1{
+
+/* Lightning */
+#lightningP1 {
     position: absolute;
     top: 840px;
     width: 120px;
@@ -103,12 +105,45 @@
     font-size: 20px;
 }
 
-#lightningP2{
+#lightningP2 {
     position: absolute;
     top: 840px;
     width: 120px;
     height: 50px;
     right: 2%;
+    font-size: 20px;
+}
+
+#BoltsLeftP1 {
+    position: absolute;
+    top: 825px;
+    left: 9%;
+    color: white;
+    font-size: 20px;
+
+}
+
+#BoltsLeftP2 {
+    position: absolute;
+    top: 825px;
+    right: 9%;
+    color: white;
+    font-size: 20px;
+}
+
+#BoltsLeftNumberP1 {
+    position: absolute;
+    top: 850px;
+    left: 9%;
+    color: cyan;
+    font-size: 20px;
+}
+
+#BoltsLeftNumberP2 {
+    position: absolute;
+    top: 850px;
+    right: 12.6%;
+    color: cyan;
     font-size: 20px;
 }
 
@@ -119,14 +154,14 @@
     left: 8.6%;
     top: 80px;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 #KnightsP2 {
     position: absolute;
     right: 9.5%;
-    color: white;
-    font-size: 20px;
+    color: whitesmoke;
+    font-size: 22px;
     top: 80px;
 }
 
@@ -140,9 +175,9 @@
 
 #KnightsLeftNumberP2 {
     position: absolute;
-    right: 12.5%;
-    color: white;
-    font-size: 20px;
+    right: 12.8%;
+    color: whitesmoke;
+    font-size: 22px;
     top: 110px;
 }
 
@@ -153,7 +188,7 @@
     left: 8.5%;
     top: 205px;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
 
 }
 
@@ -162,21 +197,21 @@
     right: 9.5%;
     top: 205px;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 #WizardsLeftNumberP1 {
     position: absolute;
     left: 8.7%;
     top: 233px;
-    color: white;
-    font-size: 20px;
+    color: #f693d8;
+    font-size: 22px;
 }
 
 #WizardsLeftNumberP2 {
     position: absolute;
-    right: 12.5%;
+    right: 12.8%;
     top: 233px;
-    color: white;
-    font-size: 20px;
+    color: #f693d8;
+    font-size: 22px;
 }

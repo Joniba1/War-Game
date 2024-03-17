@@ -11,7 +11,7 @@ class Soldier extends Sprite {
         this.index = index;
         this.velocity = velocity;
 
-        this.health = 100;
+        this.health = 70;
         this.isAttacking = false;
 
         this.framesCurrent = 0;
