@@ -16,28 +16,32 @@
   <!-- Canvas -->
   <canvas id="canvas" width="1900" height="900" style="border: 1px solid black;"></canvas>
 
-  <!-- buttons -->
-  <button class="addTroopP1" onclick="addSwordsman(1)">addTroop1</button>
-  <button class="addTroopP2" onclick="addSwordsman(2)">addTroop2</button>
-  <button class="addWizardP1" onclick="addWizard(1)">Add Wizard1</button>
-  <button id="addWizardP1" onclick="addWizard(2)">Add Wizard2</button>
-  <button id="thrust" onclick="thrust(1)">thrust1</button>
-  <button id="thrust" onclick="thrust(2)">thrust2</button>
-
-
-  <button class="battle" onclick="toggleBattle()">Battle!</button>
+  <h1 id="P1-Army-Header">Player I Army</h1>
+  <h1 id="P2-Army-Header">Player II Army</h1>
 
   <progress id="healthBarP1" value="0"></progress>
   <progress id="healthBarP2" value="0"></progress>
 
-  <h1 id="P1-Army-Header">Player I Army</h1>
-  <h1 id="P2-Army-Header">Player II Army</h1>
+  <!-- buttons -->
+  <button id="addKnightP1" onclick="addKnight(1)">Add Knight1</button>
+  <button id="addKnightP2" onclick="addKnight(2)">Add Knight2</button>
+  <button id="addWizardP1" onclick="addWizard(1)">Add Wizard1</button>
+  <button id="addWizardP2" onclick="addWizard(2)">Add Wizard2</button>
+  <button id="battle" onclick="toggleBattle()">Battle!</button>
 
-  <!-- Swordsmen text //change to lowercase letters-->
-  <p id="SwordsmenP1">Swordsmen:</p>
-  <p id="SwordsmenLeftNumberP1"></p>
-  <p id="SwordsmenP2">Swordsmen:</p>
-  <p id="SwordsmenLeftNumberP2"></p>
+  <button id="lightningP1" onclick="lightning(1)">lightning1</button>
+  <button id="lightningP2" onclick="lightning(2)">lightning2</button>
+
+  <button id="thrust" onclick="thrust(1)">thrust1</button>
+  <button id="thrust" onclick="thrust(2)">thrust2</button>
+
+
+
+  <!-- Knights text //change to lowercase letters-->
+  <p id="KnightsP1">Knights:</p>
+  <p id="KnightsLeftNumberP1"></p>
+  <p id="KnightsP2">Knights:</p>
+  <p id="KnightsLeftNumberP2"></p>
 
   <!-- Wizards text -->
   <p id="WizardsP1">Wizards:</p>

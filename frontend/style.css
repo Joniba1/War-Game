@@ -48,7 +48,8 @@
     background-color: #ccc;
 }
 
-.battle {
+/* Buttons */
+#battle {
     position: absolute;
     top: 22px;
     width: 120px;
@@ -57,8 +58,63 @@
     font-size: 20px;
 }
 
-/* Swordsmen */
-#SwordsmenP1 {
+#addKnightP1{   
+    position: absolute;
+    top: 700px;
+    width: 120px;
+    height: 50px;
+    left: 2%;
+    font-size: 20px;
+}
+
+#addKnightP2{
+    position: absolute;
+    top: 700px;
+    width: 120px;
+    height: 50px;
+    right: 2%;
+    font-size: 20px;
+}
+
+#addWizardP1 {
+    position: absolute;
+    top: 770px;
+    width: 120px;
+    height: 50px;
+    left: 2%;
+    font-size: 20px;
+}
+
+#addWizardP2{
+    position: absolute;
+    top: 770px;
+    width: 120px;
+    height: 50px;
+    right: 2%;
+    font-size: 20px;
+}
+
+#lightningP1{
+    position: absolute;
+    top: 840px;
+    width: 120px;
+    height: 50px;
+    left: 2%;
+    font-size: 20px;
+}
+
+#lightningP2{
+    position: absolute;
+    top: 840px;
+    width: 120px;
+    height: 50px;
+    right: 2%;
+    font-size: 20px;
+}
+
+
+/* Knights */
+#KnightsP1 {
     position: absolute;
     left: 8.6%;
     top: 80px;
@@ -66,15 +122,15 @@
     font-size: 20px;
 }
 
-#SwordsmenP2 {
+#KnightsP2 {
     position: absolute;
-    right: 8%;
+    right: 9.5%;
     color: white;
     font-size: 20px;
     top: 80px;
 }
 
-#SwordsmenLeftNumberP1 {
+#KnightsLeftNumberP1 {
     position: absolute;
     left: 8.6%;
     top: 110px;
@@ -82,7 +138,7 @@
     font-size: 20px;
 }
 
-#SwordsmenLeftNumberP2 {
+#KnightsLeftNumberP2 {
     position: absolute;
     right: 12.5%;
     color: white;
@@ -124,4 +180,3 @@
     color: white;
     font-size: 20px;
 }
-

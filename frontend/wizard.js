@@ -9,7 +9,7 @@ class Wizard extends Sprite {
 
         this.index = index;
         this.position = position;
-        this.health = 70;
+        this.health = 10;
 
         this.framesCurrent = 0;
         this.framesElapsed = 0;
