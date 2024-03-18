@@ -527,15 +527,20 @@ const isLinedUpOpponentWizard = (wizard, knights) => knights.some(knight => knig
 
 const isLinedUpOpponent = (troop, knights) => knights.some(knight => knight && troop.position.y === knight.position.y);
 
+let idleKnightsP1 = [];
+let idleKnightsP2 = [];
+
+
 const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
-    let idleKnightsP1 = [];
-    let idleKnightsP2 = [];
 
     //All idle knights of P1
     for (let i = 0; i < battlingKnightsP1.length; i++) {
         if (battlingKnightsP1[i] && numOfAliveTroops(battlingKnightsP2) !== 0 && !isDead(battlingKnightsP1[i])
-            && !isLinedUpOpponent(battlingKnightsP1[i], battlingKnightsP2)) {
+            && !isLinedUpOpponent(battlingKnightsP1[i], battlingKnightsP2)
+            && !idleKnightsP1.includes(battlingKnightsP1[i])) {
             idleKnightsP1.push(battlingKnightsP1[i]);
+            console.log(isLinedUpOpponent(battlingKnightsP1[i], battlingKnightsP2))
+            console.log(idleKnightsP1);
         }
 
         // else if (battlingKnightsP1[i] && !isDead(battlingKnightsP1[i]) && numOfAliveTroops(battlingKnightsP2) === 0) {
@@ -546,24 +551,33 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
     //All idle knights of P2
     for (let i = 0; i < battlingKnightsP2.length; i++) {
         if (battlingKnightsP2[i] && !isDead(battlingKnightsP2[i])
-            && !isLinedUpOpponent(battlingKnightsP2[i], battlingKnightsP1)) { //!battlingKnightsP1[i] 
+            && !isLinedUpOpponent(battlingKnightsP2[i], battlingKnightsP1)
+            && !idleKnightsP2.includes(battlingKnightsP2[i])) { //!battlingKnightsP1[i] 
             idleKnightsP2.push(battlingKnightsP2[i]);
         }
     }
 
     // Check if there are idle knights from both armies
-    if (idleKnightsP1.length > 0 && idleKnightsP2.length > 0) {
+    if (battleInProgress && idleKnightsP1.length > 0 && idleKnightsP2.length > 0) {
         console.log(`Knights need to be moved`);
         const numKnightsToMove = Math.min(idleKnightsP1.length, idleKnightsP2.length);
         console.log(numKnightsToMove);
 
         for (let i = 0; i < numKnightsToMove; i++) {
-            idleKnightsP1[i].switchSprites('walk');
-            idleKnightsP1[i].update(idleKnightsP1[i].position.x, idleKnightsP2[i].position.y);
-            console.log(`Knight ${idleKnightsP1[i].index} was moved to align with knight ${idleKnightsP2[i].index}`);
-            if (idleKnightsP1[i].position.y === idleKnightsP2[i].position.y) {
-                idleKnightsP1[i].switchSprites('idle');
+            if( idleKnightsP1[i] &&  idleKnightsP2[i]) {
+                idleKnightsP1[i].switchSprites('walk');
+                console.log(`idle1: ${idleKnightsP1.length}`);
+                console.log(`idle2: ${idleKnightsP2.length}`);
+    
+                idleKnightsP1[i].update(idleKnightsP1[i].position.x, idleKnightsP2[i].position.y);
+                console.log(`Knight ${idleKnightsP1[i].index} was moved to align with knight ${idleKnightsP2[i].index}`);
+                if (idleKnightsP1[i].position.y === idleKnightsP2[i].position.y) {
+                    idleKnightsP1[i].switchSprites('idle');
+                    idleKnightsP1.splice(i, 1);
+                    idleKnightsP2.splice(i, 1);
+                }
             }
+
         }
     }
 
@@ -591,6 +605,7 @@ const renderArmy = () => {
     troopsNumberWizardP1.update();
     troopsNumberWizardP2.update();
 
+    //Fireworks
     if (didBattleEnd()) {
         if (purpleFirework.framesElapsed === 36) {
             rndX1 = Math.random() * (1800 - 100) + 400; // Random value between 400 and 1500 for X
@@ -618,10 +633,10 @@ const renderArmy = () => {
                 knight.framesElapsed = 0;
             }
 
-            // //debugging text
-            // ctx.fillStyle = "black";
-            // ctx.font = "12px Arial";
-            // ctx.fillText(i, armyP1[i].position.x, armyP1[i].position.y - 10);
+            //debugging text
+            ctx.fillStyle = "black";
+            ctx.font = "12px Arial";
+            ctx.fillText(i, armyP1[i].position.x, armyP1[i].position.y + 30);
         }
     }
 
@@ -638,10 +653,10 @@ const renderArmy = () => {
                 knight.framesElapsed = 0;
             }
 
-            // //debugging text
-            // ctx.fillStyle = "black";
-            // ctx.font = "12px Arial";
-            // ctx.fillText(i, knight.position.x, knight.position.y - 10);
+            //debugging text
+            ctx.fillStyle = "black";
+            ctx.font = "12px Arial";
+            ctx.fillText(i, knight.position.x, knight.position.y + 30);
         }
     }
 
@@ -704,7 +719,7 @@ const didBattleEnd = () => {
                 (battlingWizardsP2.length !== 0 && battlingWizardsP2.some(wizard => wizard && wizard.health > 0)))) {
             if (KnightsNumberP1.textContent === '0' && wizardsNumberP1.textContent === '0') {
                 for (let i = 0; i < playerWonText.length; i++) {
-                    playerWonText[i].textContent = 'Player 2 Won';
+                    playerWonText[i].textContent = 'Player I Won';
                 } return true;
             }
             else { //only the round ended
@@ -719,7 +734,7 @@ const didBattleEnd = () => {
 
             if (KnightsNumberP2.textContent === '0' && wizardsNumberP2.textContent === '0') {
                 for (let i = 0; i < playerWonText.length; i++) {
-                    playerWonText[i].textContent = 'Player 1 Won';
+                    playerWonText[i].textContent = 'Player II Won';
                 } return true;
             } else { //only the round ended
                 firstArrival = false;
