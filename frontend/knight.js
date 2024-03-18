@@ -1,4 +1,4 @@
-class Soldier extends Sprite {
+class Knight extends Sprite {
     constructor(index, { position, velocity, offset, imageSrc, scale = 1, framesMax = 1, sprites }) {
 
         super({
@@ -11,7 +11,7 @@ class Soldier extends Sprite {
         this.index = index;
         this.velocity = velocity;
 
-        this.health = 170;
+        this.health = 100;
         this.isAttacking = false;
 
         this.framesCurrent = 0;
