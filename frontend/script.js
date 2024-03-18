@@ -497,8 +497,7 @@ const numOfAliveTroops = (troops) => {
 
 const isLinedUpOpponentWizard = (wizard, knights) => knights.some(knight => knight && wizard && knight.position.y === wizard.position.y + 30);
 
-const isLinedUpOpponent = (troop, array) => array.some(knight => knight && troop.position.y === knight.position.y);
-
+const isLinedUpOpponent = (troop, knights) => knights.some(knight => knight && troop.position.y === knight.position.y);
 
 const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
     let idleKnightsP1 = [];
@@ -506,18 +505,20 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
 
     //All idle knights of P1
     for (let i = 0; i < battlingKnightsP1.length; i++) {
-        if (battlingKnightsP1[i] && numOfAliveTroops(battlingKnightsP2) !== 0 && !isDead(battlingKnightsP1[i]) &&
-            !isLinedUpOpponent(battlingKnightsP1[i], battlingKnightsP2)) { //!battlingKnightsP2[i] 
-            idleKnightsP1.push(battlingKnightsP1[i]);
-        } else if (battlingKnightsP1[i] && !isDead(battlingKnightsP1[i]) && numOfAliveTroops(battlingKnightsP2) === 0) {
+        if (battlingKnightsP1[i] && numOfAliveTroops(battlingKnightsP2) !== 0 && !isDead(battlingKnightsP1[i])
+            && !isLinedUpOpponent(battlingKnightsP1[i], battlingKnightsP2)) {
             idleKnightsP1.push(battlingKnightsP1[i]);
         }
+
+        // else if (battlingKnightsP1[i] && !isDead(battlingKnightsP1[i]) && numOfAliveTroops(battlingKnightsP2) === 0) {
+        //     idleKnightsP1.push(battlingKnightsP1[i]);
+        // }
     }
 
     //All idle knights of P2
     for (let i = 0; i < battlingKnightsP2.length; i++) {
-        if (battlingKnightsP2[i] && !isDead(battlingKnightsP2[i]) &&
-            !isLinedUpOpponent(battlingKnightsP2[i], battlingKnightsP1)) { //!battlingKnightsP1[i] 
+        if (battlingKnightsP2[i] && !isDead(battlingKnightsP2[i])
+            && !isLinedUpOpponent(battlingKnightsP2[i], battlingKnightsP1)) { //!battlingKnightsP1[i] 
             idleKnightsP2.push(battlingKnightsP2[i]);
         }
     }
@@ -526,6 +527,7 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
     if (idleKnightsP1.length > 0 && idleKnightsP2.length > 0) {
         console.log(`Knights need to be moved`);
         const numKnightsToMove = Math.min(idleKnightsP1.length, idleKnightsP2.length);
+        console.log(numKnightsToMove);
 
         for (let i = 0; i < numKnightsToMove; i++) {
             idleKnightsP1[i].switchSprites('walk');
@@ -537,17 +539,18 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
         }
     }
 
-    // else if (firstArrival && numOfAliveTroops(battlingKnightsP2) === 0) {
-    //     for (let i = 0; i < battlingWizardsP2.length; i++) {
-    //         if (battlingKnightsP1[i] && battlingWizardsP2[i] && !isLinedUpOpponentWizard(battlingWizardsP2[i], battlingKnightsP1)) {
-    //             battlingKnightsP1[i].switchSprites('walk');
-    //             battlingKnightsP1[i].update(battlingWizardsP2[i].position.x, battlingWizardsP2[i].position.y + 30);
-    //             if (battlingKnightsP1[i].position.y === battlingWizardsP2[i].position.y + 30) {
-    //                 battlingKnightsP1[i].switchSprites('idle');
-    //             }
-    //         }
-    //     }
-    // }
+    else if (firstArrival && battleInProgress && numOfAliveTroops(battlingKnightsP2) === 0) {
+        for (let i = 0; i < battlingWizardsP2.length; i++) {
+            if (battlingKnightsP1[i] && battlingWizardsP2[i] && !isLinedUpOpponentWizard(battlingWizardsP2[i], battlingKnightsP1)) {
+                battlingKnightsP1[i].switchSprites('walk');
+                battlingKnightsP1[i].update(battlingWizardsP2[i].position.x, battlingWizardsP2[i].position.y + 30);
+                if (battlingKnightsP1[i].position.y === battlingWizardsP2[i].position.y + 30) {
+                    battlingKnightsP1[i].switchSprites('idle');
+                }
+            }
+        }
+    }
+
 
 
 }
@@ -564,8 +567,8 @@ const renderArmy = () => {
         knight = battlingKnightsP1[i];
         if (knight) {
             knight.update(knight.position.x, knight.position.y); //also draws the knight
-            console.log(firstArrival);
-            console.log(knight.framesElapsed);
+            // console.log(firstArrival);
+            // console.log(knight.framesElapsed);
             if (knight.position.x === 845 && knight.framesElapsed === 30) {
                 knight.switchSprites('idle');
                 knight.framesElapsed = 0;
@@ -582,8 +585,8 @@ const renderArmy = () => {
         knight = battlingKnightsP2[i];
 
         if (knight) {
-            console.log(firstArrival);
-            console.log(knight.framesElapsed);
+            // console.log(firstArrival);
+            // console.log(knight.framesElapsed);
 
             knight.update(knight.position.x, knight.position.y);  //also draws the knight
             if (knight.position.x === 975 && knight.framesElapsed === 30) {
