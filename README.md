@@ -6,11 +6,18 @@ In this turn-based combat game, each player commands an army and deploys a desir
 
 The game's controls are quite simple. Each player has 3 buttons:
 
--Add Knight - adds a knight to the battling forces.
--Add Wizard - adds a wizard to the battling forces.
--Lightning - strikes the enemy forces with lightning bolts, 2 uses each round. 
+- Add Knight: adds a knight to the battling forces.
+- Add Wizard: adds a wizard to the battling forces.
+- Lightning: strikes the enemy forces with lightning bolts, 2 uses each round. 
 
 ##
 
 Each player has indicators on each side of the screen, displaying the remaining troops of each type.
 
+# Pre-Requirements
+
+- express: type 'npm i express' onto your terminal
+- [Node.js](https://nodejs.org/en)
+
+Type git clone <https://github.com/Joniba1/War-Game.git>
+ 
