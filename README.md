@@ -19,5 +19,11 @@ Each player has indicators on each side of the screen, displaying the remaining 
 - express: type 'npm i express' onto your terminal
 - [Node.js](https://nodejs.org/en)
 
-Type git clone <https://github.com/Joniba1/War-Game.git>
+Paste 'git clone <https://github.com/Joniba1/War-Game.git>' onto your cmd 
+
+##
+![pic1](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePic1.png?raw=true)
+##
+![pic2](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePic2.png?raw=true)
+
  
