@@ -1,5 +1,5 @@
 class Knight extends Sprite {
-    constructor(index, { position, velocity, offset, imageSrc, scale = 1, framesMax = 1, sprites }) {
+    constructor(index, { position, velocity, imageSrc, scale = 1, framesMax = 1, sprites }) {
 
         super({
             position,
@@ -47,8 +47,5 @@ class Knight extends Sprite {
             this.position.y = targetY;
         }
     }
-
-    //check hh
-
 }
 

@@ -65,14 +65,6 @@ class Sprite {
         this.animateFrames();
     }
 
-    setSource(imageSrc) {
-        this.image.src = imageSrc;
-    }
-
-    drawBackground(ctx, canvasWidth, canvasHeight) {
-        ctx.drawImage(this.image, 0, 0, canvasWidth, canvasHeight);
-    }
-
     animateFrames() {
         this.framesElapsed++;
         // Check if it's time to change frames
