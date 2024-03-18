@@ -11,6 +11,9 @@ const wizardsNumberP2 = document.getElementById("WizardsLeftNumberP2");
 const boltsNumberP1 = document.getElementById("BoltsLeftNumberP1");
 const boltsNumberP2 = document.getElementById("BoltsLeftNumberP2");
 
+const playerWonText = document.getElementsByClassName("playerWonText");
+
+
 
 //Vars
 let armyP1 = [];
@@ -19,6 +22,15 @@ let wizardsArrayP1 = [];
 let wizardsArrayP2 = [];
 
 let drawFireball = true;
+
+
+//fireworks
+let rndX1 = 500;
+let rndX2 = 500;
+let rndX3 = 1200;
+let rndY1 = 200;
+let rndY2 = 400;
+let rndY3 = 600;
 
 let spacing = 100;
 
@@ -158,6 +170,22 @@ const troopsNumberWizardP2 = new Wizard(-2, {
     },
     fireballSrc: 'assets/wizard/FireballMirrored.png'
 });
+
+const purpleFirework = new Firework(
+    { x: 500, y: 500 }, //Start position
+    'assets/purpleFirework.png', //ImageSrc
+    4, //FramesMax
+    1);
+const pinkFirework = new Firework(
+    { x: 500, y: 800 }, //Start position
+    'assets/pinkFirework.png', //ImageSrc
+    4, //FramesMax
+    1);
+const yellowFirework = new Firework(
+    { x: 500, y: 300 }, //Start position
+    'assets/yellowFirework.png', //ImageSrc
+    4, //FramesMax
+    1);
 
 
 const initializeArmies = () => {
@@ -563,6 +591,22 @@ const renderArmy = () => {
     troopsNumberWizardP1.update();
     troopsNumberWizardP2.update();
 
+    if (didBattleEnd()) {
+        if (purpleFirework.framesElapsed === 36) {
+            rndX1 = Math.random() * (1800 - 100) + 400; // Random value between 400 and 1500 for X
+            rndX2 = Math.random() * (1900 - 100) + 400;
+            rndX3 = Math.random() * (1700 - 300) + 400;
+            rndY1 = Math.random() * (800 - 100) + 100;   // Random value between 100 and 800 for Y
+            rndY2 = Math.random() * (800 - 100) + 100;
+            rndY3 = Math.random() * (800 - 100) + 100;
+            purpleFirework.framesElapsed = 0;
+        }
+        purpleFirework.update(rndX1, rndY1);
+        pinkFirework.update(rndX2, rndY2);
+        yellowFirework.update(rndX3, rndY3);
+    }
+
+
     for (let i = 0; i < battlingKnightsP1.length; i++) {
         knight = battlingKnightsP1[i];
         if (knight) {
@@ -659,7 +703,9 @@ const didBattleEnd = () => {
             ((battlingKnightsP2.length !== 0 && battlingKnightsP2.some(knight => knight && knight.health > 0)) ||
                 (battlingWizardsP2.length !== 0 && battlingWizardsP2.some(wizard => wizard && wizard.health > 0)))) {
             if (KnightsNumberP1.textContent === '0' && wizardsNumberP1.textContent === '0') {
-                console.log(`Player 2 won`);
+                for (let i = 0; i < playerWonText.length; i++) {
+                    playerWonText[i].textContent = 'Player 2 Won';
+                } return true;
             }
             else { //only the round ended
                 firstArrival = false;
@@ -672,7 +718,9 @@ const didBattleEnd = () => {
                 (battlingWizardsP1.length !== 0 && battlingWizardsP1.some(wizard => wizard && wizard.health > 0)))) {
 
             if (KnightsNumberP2.textContent === '0' && wizardsNumberP2.textContent === '0') {
-                console.log(`Player 1 won`);
+                for (let i = 0; i < playerWonText.length; i++) {
+                    playerWonText[i].textContent = 'Player 1 Won';
+                } return true;
             } else { //only the round ended
                 firstArrival = false;
                 roundWinner = '1';
@@ -680,6 +728,7 @@ const didBattleEnd = () => {
             }
         }
     }
+    return false;
 }
 
 const animateWizardAttacks = () => {

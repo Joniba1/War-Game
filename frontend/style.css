@@ -215,3 +215,33 @@
     color: #f693d8;
     font-size: 22px;
 }
+
+
+.playerWonText {
+    font-size: 40px;
+    font-weight: bold;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: changeColor 2s infinite alternate; /* Apply the animation */
+}
+
+
+@keyframes changeColor {
+    0% {
+        color: red;
+    }
+    25% {
+        color: blue;
+    }
+    50% {
+        color: green;
+    }
+    75% {
+        color: yellow;
+    }
+    100% {
+        color: purple;
+    }
+}
