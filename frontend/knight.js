@@ -48,5 +48,7 @@ class Knight extends Sprite {
         }
     }
 
+    //check
+
 }
 
