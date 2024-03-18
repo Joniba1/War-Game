@@ -24,13 +24,13 @@ let wizardsArrayP2 = [];
 let drawFireball = true;
 
 
-//fireworks
-let rndX1 = 500;
-let rndX2 = 500;
-let rndX3 = 1200;
-let rndY1 = 200;
-let rndY2 = 400;
-let rndY3 = 600;
+//fireworks initial location
+let rndX1 = Math.random() * (1800 - 100) + 100; 
+let rndX2 =  Math.random() * (1800 - 100) + 100;;
+let rndX3 =  Math.random() * (1800 - 100) + 100;;
+let rndY1 = Math.random() * (800 - 100) + 100;;
+let rndY2 = Math.random() * (800 - 100) + 100;;
+let rndY3 = Math.random() * (800 - 100) + 100;;
 
 let spacing = 100;
 
@@ -597,10 +597,10 @@ const renderArmy = () => {
     //Fireworks
     if (didBattleEnd()) {
         if (purpleFirework.framesElapsed === 36) {
-            rndX1 = Math.random() * (1800 - 100) + 400; // Random value between 400 and 1500 for X
-            rndX2 = Math.random() * (1900 - 100) + 400;
-            rndX3 = Math.random() * (1700 - 300) + 400;
-            rndY1 = Math.random() * (800 - 100) + 100;   // Random value between 100 and 800 for Y
+            rndX1 = Math.random() * (1800 - 100) + 100; 
+            rndX2 = Math.random() * (1800 - 100) + 100;
+            rndX3 = Math.random() * (1800 - 100) + 100;
+            rndY1 = Math.random() * (800 - 100) + 100;  
             rndY2 = Math.random() * (800 - 100) + 100;
             rndY3 = Math.random() * (800 - 100) + 100;
             purpleFirework.framesElapsed = 0;
