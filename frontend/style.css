@@ -56,74 +56,75 @@
 
 /* Buttons */
 #battle {
+    cursor: pointer;  
     position: absolute;
-    top: 22px;
-    width: 120px;
-    height: 50px;
-    left: 48%;
-    font-size: 20px;
+    top: 0.5%;
+    left: 47%;
+    width: 125px;
+    height: 125px;
 }
 
 #addKnightP1 {
+    cursor: pointer;  
     position: absolute;
-    top: 700px;
-    width: 120px;
-    height: 50px;
-    left: 2%;
-    font-size: 20px;
+    bottom: 28%;
+    width: 170px;
+    height: 113px;
+    left: 0%;
 }
 
 #addKnightP2 {
+    cursor: pointer;  
     position: absolute;
-    top: 700px;
-    width: 120px;
-    height: 50px;
-    right: 2%;
-    font-size: 20px;
+    bottom: 28%;
+    width: 170px;
+    height: 113px;
+    right: 0px;
 }
 
 #addWizardP1 {
+    cursor: pointer;  
     position: absolute;
-    top: 770px;
-    width: 120px;
-    height: 50px;
-    left: 2%;
-    font-size: 20px;
+    bottom: 15%;
+    width: 170px;
+    height: 113px;
+    left: 0px;
 }
 
 #addWizardP2 {
+    cursor: pointer;  
     position: absolute;
-    top: 770px;
-    width: 120px;
-    height: 50px;
-    right: 2%;
-    font-size: 20px;
+    bottom: 15%;
+    width: 170px;
+    height: 113px;
+    right: 0px;
 }
-
 
 /* Lightning */
 #lightningP1 {
+    cursor: pointer;  
     position: absolute;
-    top: 840px;
-    width: 120px;
-    height: 50px;
-    left: 2%;
+    bottom: 2%;
+    width: 170px;
+    height: 113px;
+    left: 0px;
     font-size: 20px;
 }
 
 #lightningP2 {
+    cursor: pointer;  
     position: absolute;
-    top: 840px;
-    width: 120px;
-    height: 50px;
-    right: 2%;
+    bottom: 2%;
+    width: 170px;
+    height: 113px;
+    right: 0px;
     font-size: 20px;
 }
 
 #BoltsLeftP1 {
     position: absolute;
-    top: 825px;
-    left: 9%;
+    bottom: 70px;
+    left: 8.2%;
     color: white;
     font-size: 20px;
 
@@ -131,24 +132,24 @@
 
 #BoltsLeftP2 {
     position: absolute;
-    top: 825px;
-    right: 9%;
+    bottom: 70px;
+    right: 8%;
     color: white;
     font-size: 20px;
 }
 
 #BoltsLeftNumberP1 {
     position: absolute;
-    top: 850px;
-    left: 9%;
+    bottom: 45px;
+    left: 8.2%;
     color: cyan;
     font-size: 20px;
 }
 
 #BoltsLeftNumberP2 {
     position: absolute;
-    top: 850px;
-    right: 12.6%;
+    bottom: 45px;
+    right: 11.6%;
     color: cyan;
     font-size: 20px;
 }

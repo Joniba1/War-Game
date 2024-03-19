@@ -53,9 +53,4 @@ class Wizard extends Sprite {
             this.fireball.position.y = targetY;
         }
     }
-
-    update() {
-        this.draw();
-        this.animateFrames();
-    }
 }
