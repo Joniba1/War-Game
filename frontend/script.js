@@ -95,8 +95,8 @@ const lightningBoltP2 = new Lightning(
     1 //scale
 );
 
-let boltsLeftP1 = 180;
-let boltsLeftP2 = 180;
+let boltsLeftP1 = 2;
+let boltsLeftP2 = 2;
 
 let renderLightningBoltP1 = false;
 let renderLightningBoltP2 = false;
@@ -740,7 +740,7 @@ const didBattleEnd = () => {
                 firstCharge = false;
                 roundWinner = '1';
                 battleInProgress = false;
-                boltsLeftP1 = 2;
+                boltsLeftP2 = 2;
             }
         }
     }
