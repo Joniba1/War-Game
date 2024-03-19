@@ -139,6 +139,10 @@ const troopsNumberWizardP1 = new Wizard(-1, {
         idle: {
             imageSrc: 'assets/wizard/wizardIdle.png',
             framesMax: 6
+        },
+        stomping: {
+            imageSrc: 'assets/wizard/stompingWizard.png',
+            framesMax: 6
         }
     },
     fireballSrc: 'assets/wizard/Fireball.png'
@@ -152,6 +156,10 @@ const troopsNumberWizardP2 = new Wizard(-2, {
     sprites: {
         idle: {
             imageSrc: 'assets/wizard/wizardIdleMirrored.png',
+            framesMax: 6
+        },
+        stomping: {
+            imageSrc: 'assets/wizard/stompingWizardMirrored.png',
             framesMax: 6
         }
     },
@@ -721,7 +729,9 @@ const didBattleEnd = () => {
             if (KnightsNumberP1.textContent === '0' && wizardsNumberP1.textContent === '0') {
                 for (let i = 0; i < playerWonText.length; i++) {
                     playerWonText[i].textContent = 'Player II Won';
-                } return true;
+                }
+                troopsNumberWizardP1.switchSprites('stomping');
+                return true;
             }
             else { //only the round ended
                 firstCharge = false;
@@ -737,7 +747,10 @@ const didBattleEnd = () => {
             if (KnightsNumberP2.textContent === '0' && wizardsNumberP2.textContent === '0') {
                 for (let i = 0; i < playerWonText.length; i++) {
                     playerWonText[i].textContent = 'Player I Won';
-                } return true;
+                } 
+                troopsNumberWizardP2.position.x = 1770;
+                troopsNumberWizardP2.switchSprites('stomping');
+                return true;
             } else { //only the round ended
                 firstCharge = false;
                 roundWinner = '1';

@@ -44,6 +44,16 @@ class Sprite {
                     this.currentSprite = 'thrust';
                 }
                 break;
+            case 'stomping':
+                if (this.image !== this.sprites.stomping.image) {
+                    this.image = this.sprites.stomping.image;
+                    this.framesMax = this.sprites.stomping.framesMax;
+                    this.framesCurrent = 0;
+                    this.currentSprite = 'stomping';
+                    this.scale = 0.6;
+                    this.position.y = this.position.y + 30;
+                }
+                break;
         }
     }
 

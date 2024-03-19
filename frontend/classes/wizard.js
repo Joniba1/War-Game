@@ -24,6 +24,11 @@ class Wizard extends Sprite {
             this.fireballSrc, //ImageSrc
             5, //FramesMax
             0.5)   //Scale
+
+        for (const sprite in sprites) {
+            sprites[sprite].image = new Image();
+            sprites[sprite].image.src = sprites[sprite].imageSrc;
+        }
     }
 
 
