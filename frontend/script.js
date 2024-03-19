@@ -35,7 +35,7 @@ let rndY3 = Math.random() * (800 - 100) + 100;;
 let spacing = 100;
 
 //knights
-let knights = 6; 
+let knights = 6;
 KnightsNumberP1.textContent = knights;
 KnightsNumberP2.textContent = knights;
 
@@ -168,17 +168,17 @@ const troopsNumberWizardP2 = new Wizard(-2, {
 //Fireworks
 const purpleFirework = new Firework(
     { x: 500, y: 500 }, //Start position
-    'assets/purpleFirework.png', //ImageSrc
+    'assets/fireworks/purpleFirework.png', //ImageSrc
     4, //FramesMax
     1);
 const pinkFirework = new Firework(
     { x: 500, y: 800 }, //Start position
-    'assets/pinkFirework.png', //ImageSrc
+    'assets/fireworks/pinkFirework.png', //ImageSrc
     4, //FramesMax
     1);
 const yellowFirework = new Firework(
     { x: 500, y: 300 }, //Start position
-    'assets/yellowFirework.png', //ImageSrc
+    'assets/fireworks/yellowFirework.png', //ImageSrc
     4, //FramesMax
     1);
 
@@ -744,7 +744,7 @@ const didBattleEnd = () => {
             if (KnightsNumberP2.textContent === '0' && wizardsNumberP2.textContent === '0') {
                 for (let i = 0; i < playerWonText.length; i++) {
                     playerWonText[i].textContent = 'Player I Won';
-                } 
+                }
                 troopsNumberWizardP2.position.x = 1770;
                 troopsNumberWizardP2.switchSprites('stomping');
                 return true;
