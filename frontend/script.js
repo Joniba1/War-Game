@@ -10,17 +10,13 @@ const wizardsNumberP1 = document.getElementById("WizardsLeftNumberP1");
 const wizardsNumberP2 = document.getElementById("WizardsLeftNumberP2");
 const boltsNumberP1 = document.getElementById("BoltsLeftNumberP1");
 const boltsNumberP2 = document.getElementById("BoltsLeftNumberP2");
-
 const playerWonText = document.getElementsByClassName("playerWonText");
-
-
 
 //Vars
 let knightsP1 = [];
 let knightsP2 = [];
 let wizardsArrayP1 = [];
 let wizardsArrayP2 = [];
-
 let drawFireball = true;
 
 //fireworks initial location
@@ -80,8 +76,8 @@ const lightningBoltP2 = new Lightning(
     1 //scale
 );
 
-let boltsLeftP1 = 200;
-let boltsLeftP2 = 200;
+let boltsLeftP1 = 2;
+let boltsLeftP2 = 2;
 
 let renderLightningBoltP1 = false;
 let renderLightningBoltP2 = false;
