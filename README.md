@@ -6,9 +6,21 @@ In this turn-based combat game, each player commands an army and deploys a desir
 
 The game's controls are quite simple. Each player has 3 buttons:
 
+
 - Add Knight: adds a knight to the battling forces.
+
+<img src="https://github.com/Joniba1/War-Game/blob/main/frontend/assets/buttons/knight_button.png?raw=true" alt="Add Knight" width="100">
+
 - Add Wizard: adds a wizard to the battling forces.
-- Lightning: strikes the enemy forces with lightning bolts, 2 uses each round. 
+
+<img src="https://github.com/Joniba1/War-Game/blob/main/frontend/assets/buttons/wizard_button.png?raw=true" alt="Add Wizard" width="100">
+
+- Lightning: strikes the enemy forces with lightning bolts, 2 uses each round.
+
+<img src="https://github.com/Joniba1/War-Game/blob/main/frontend/assets/buttons/lightning_button.png?raw=true" alt="Lightning" width="100">
+
+
+
 
 Note that lightning bolts won't stack, so might as well use them each round.
 

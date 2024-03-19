@@ -23,7 +23,6 @@ let wizardsArrayP2 = [];
 
 let drawFireball = true;
 
-
 //fireworks initial location
 let rndX1 = Math.random() * (1800 - 100) + 100;
 let rndX2 = Math.random() * (1800 - 100) + 100;;
@@ -81,8 +80,8 @@ const lightningBoltP2 = new Lightning(
     1 //scale
 );
 
-let boltsLeftP1 = 2;
-let boltsLeftP2 = 2;
+let boltsLeftP1 = 200;
+let boltsLeftP2 = 200;
 
 let renderLightningBoltP1 = false;
 let renderLightningBoltP2 = false;
