@@ -16,8 +16,8 @@ const playerWonText = document.getElementsByClassName("playerWonText");
 
 
 //Vars
-let armyP1 = [];
-let armyP2 = [];
+let knightsP1 = [];
+let knightsP2 = [];
 let wizardsArrayP1 = [];
 let wizardsArrayP2 = [];
 
@@ -34,9 +34,9 @@ let rndY3 = Math.random() * (800 - 100) + 100;;
 
 let spacing = 100;
 
-let armySize = 6; //swordsmen/knights
-KnightsNumberP1.textContent = armySize;
-KnightsNumberP2.textContent = armySize;
+let knights = 6; //swordsmen/knights
+KnightsNumberP1.textContent = knights;
+KnightsNumberP2.textContent = knights;
 
 let wizards = 3;
 wizardsNumberP1.textContent = wizards;
@@ -54,25 +54,14 @@ let battlingWizardsP2 = [];
 let battleInProgress = false;
 let firstCharge = false; //first movement flag
 
-let attackerIndex = 0; //turn to attack
+const starter = Math.round(Math.random() * 2);
+let attackerIndex = starter; //random starter
 
-let aKnightWasMoved = false;
 let swordsmenAddedFlag = false;
 let wizardsAddedFlag = false;
 
 let fireFireball = false;
 let roundWinner = '';
-
-
-const thrust = (index) => {
-    if (index === 1) {
-        troopsNumberKnightP1.switchSprites('thrust');
-    } else {
-        troopsNumberKnightP2.switchSprites('thrust');
-
-    }
-
-}
 
 //Background
 const background = new Sprite({
@@ -80,7 +69,7 @@ const background = new Sprite({
     imageSrc: 'assets/imgs/background.png'
 });
 
-//Lightning bolt
+//Lightning bolts
 const lightningBoltP1 = new Lightning(
     { x: 0, y: 0 },
     'assets/lightning.png', //img src
@@ -169,6 +158,8 @@ const troopsNumberWizardP2 = new Wizard(-2, {
     fireballSrc: 'assets/wizard/FireballMirrored.png'
 });
 
+
+//Fireworks
 const purpleFirework = new Firework(
     { x: 500, y: 500 }, //Start position
     'assets/purpleFirework.png', //ImageSrc
@@ -190,7 +181,7 @@ const initializeArmies = () => {
     let posY = canvas.height - 770; //armies initial y position
 
     //Initialize swordsmen
-    for (let i = 0; i < armySize; i++) {
+    for (let i = 0; i < knights; i++) {
         const knightP1 = new Knight(i, {
             position: { x: 670, y: posY },
             velocity: { x: 4, y: 4 },
@@ -212,7 +203,7 @@ const initializeArmies = () => {
                 }
             }
         });
-        armyP1.push(knightP1);
+        knightsP1.push(knightP1);
 
         const knightP2 = new Knight(i, {
             position: { x: 1150, y: posY },
@@ -235,7 +226,7 @@ const initializeArmies = () => {
                 }
             }
         });
-        armyP2.push(knightP2);
+        knightsP2.push(knightP2);
 
         posY += spacing;
     }
@@ -282,23 +273,23 @@ initializeArmies();
 const addKnight = (playerIndex) => {
     swordsmenAddedFlag = true;
     if (playerIndex === 1 && !battleInProgress) {
-        knight = armyP1[battlingKnightsP1.length];
+        knight = knightsP1[battlingKnightsP1.length];
         knight.update(knight.position.x, knight.position.y);
         battlingKnightsP1.push(knight);
 
         //healthbar
-        KnightsNumberP1.textContent = armySize - battlingKnightsP1.length;
+        KnightsNumberP1.textContent = knights - battlingKnightsP1.length;
         healthP1 += knight.health;
         healthBarP1.max = healthP1;
         healthBarP1.value = healthP1;
     }
     else if (playerIndex === 2 && !battleInProgress) {
-        knight = armyP2[battlingKnightsP2.length];
+        knight = knightsP2[battlingKnightsP2.length];
         knight.update(knight.position.x, knight.position.y)
         battlingKnightsP2.push(knight);
 
         //healthbar
-        KnightsNumberP2.textContent = armySize - battlingKnightsP2.length;
+        KnightsNumberP2.textContent = knights - battlingKnightsP2.length;
         healthP2 += knight.health;
         healthBarP2.max = healthP2;
         healthBarP2.value = healthP2;
@@ -338,7 +329,7 @@ const battleFirstCharge = () => {
         spacing = 65;
         // Battling troops movement for Player 1
         for (let i = 0; i < battlingKnightsP1.length; i++) {
-            knight = armyP1[i];
+            knight = knightsP1[i];
             if (knight && knight.position.x !== 910 - spacing) {
                 knight.update(910 - spacing, knight.position.y);
                 knight.switchSprites('walk');
@@ -350,7 +341,7 @@ const battleFirstCharge = () => {
         spacing = 65;
         // Battling troops movement for Player 2
         for (let i = 0; i < battlingKnightsP2.length; i++) {
-            knight = armyP2[i];
+            knight = knightsP2[i];
             if (knight && knight.position.x !== 910 + spacing) {
                 knight.update(910 + spacing, knight.position.y);
                 knight.switchSprites('walk');
@@ -360,9 +351,16 @@ const battleFirstCharge = () => {
 
     if (roundWinner === '2' || roundWinner === '') {
         if (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing)
-            || battlingKnightsP1.length === 0 && battlingKnightsP2.length === 0 && battlingWizardsP1.length !== 0 && battlingWizardsP2.length !== 0) {
+            || battlingKnightsP1.length === 0 && battlingKnightsP2.length > 0 && battlingWizardsP1.length !== 0
+            && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing)) {
             firstCharge = true;
             battlingKnightsP1.forEach(knight => {
+                if (knight) {
+                    knight.switchSprites('idle');
+                }
+            });
+
+            battlingKnightsP2.forEach(knight => {
                 if (knight) {
                     knight.switchSprites('idle');
                 }
@@ -373,6 +371,12 @@ const battleFirstCharge = () => {
     else if (roundWinner === '1') { // || roundWinner === ''
         if (battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 975)) {
             firstCharge = true;
+            battlingKnightsP1.forEach(knight => {
+                if (knight) {
+                    knight.switchSprites('idle');
+                }
+            });
+
             battlingKnightsP2.forEach(knight => {
                 if (knight) {
                     knight.switchSprites('idle');
@@ -471,10 +475,10 @@ const attack = () => {
                     attacker[i].occupied = false;
                     console.log(`Knight: ${opponent.index} has died`);
                     if (attackerIndex % 2 === 0) {
-                        armyP2[armyP2.indexOf(opponent)] = null;
+                        knightsP2[knightsP2.indexOf(opponent)] = null;
                         wizardsArrayP2[wizardsArrayP2.indexOf(opponent)] = null;
                     } else {
-                        armyP1[armyP1.indexOf(opponent)] = null;
+                        knightsP1[knightsP1.indexOf(opponent)] = null;
                         wizardsArrayP1[wizardsArrayP1.indexOf(opponent)] = null;
 
                     }
@@ -529,6 +533,15 @@ let idleKnightsP1 = [];
 let idleKnightsP2 = [];
 
 const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
+    const notNullIndexes = (knights, wizards) => {
+        let notNullOfTheArray = [];
+        for (let i = 0; i < knights.length; i++) {
+            if (knights[i] && !isLinedUpOpponentWizard(knights[i], wizards, -30)) {
+                notNullOfTheArray.push(knights[i].index)
+            }
+        }
+        return notNullOfTheArray;
+    }
 
     //All idle knights of P1
     for (let i = 0; i < battlingKnightsP1.length; i++) {
@@ -583,7 +596,6 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
         }
     }
 
-
     else if (numOfAliveTroops(battlingKnightsP1) === 0 && firstCharge) {
         let knights = notNullIndexes(battlingKnightsP2, battlingWizardsP1);
         for (let i = 0; i < battlingWizardsP1.length; i++) {
@@ -599,17 +611,7 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
     }
 }
 
-const notNullIndexes = (knights, wizards) => {
-    let notNullOfTheArray = [];
-    for (let i = 0; i < knights.length; i++) {
-        if (knights[i] && !isLinedUpOpponentWizard(knights[i], wizards, -30)) {
-            notNullOfTheArray.push(knights[i].index)
-        }
-    }
-    return notNullOfTheArray;
-}
-
-const renderArmy = () => {
+const render = () => {
     background.update();
     troopsNumberKnightP1.update(troopsNumberKnightP1.position.x, troopsNumberKnightP1.position.y);
     troopsNumberKnightP2.update(troopsNumberKnightP2.position.x, troopsNumberKnightP2.position.y);
@@ -695,7 +697,7 @@ const toggleBattle = () => { battleInProgress = true; };
 
 const animate = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderArmy(); // Renders the army every frame
+    render(); //Renders the screen every frame
 
     reArrangeKnights(battlingKnightsP1, battlingKnightsP2);
 
@@ -777,10 +779,10 @@ const animateWizardAttacks = () => {
                         if (isDead(targetKnight)) {
                             drawFireball = false;
                             if (attackerIndex % 2 === 0) {
-                                armyP2 = armyP2.map(knight => (knight === targetKnight) ? null : knight);
+                                knightsP2 = knightsP2.map(knight => (knight === targetKnight) ? null : knight);
                             }
                             else {
-                                armyP1 = armyP1.map(knight => (knight === targetKnight) ? null : knight);
+                                knightsP1 = knightsP1.map(knight => (knight === targetKnight) ? null : knight);
                             }
                             battlingKnightsP1[battlingKnightsP1.indexOf(targetKnight)] = null;
                             battlingKnightsP2[battlingKnightsP2.indexOf(targetKnight)] = null;
@@ -848,10 +850,7 @@ const detectCollision = (fireball, opponent) => {
     if (distX > (40 / 2 + 10)) { return false; }
     if (distY > (60 / 2 + 10)) { return false; }
 
-    if (distX <= (40 / 2) || distY <= (60 / 2)) {
-        console.log('Collision detected');
-        return true;
-    }
+    if (distX <= (40 / 2) || distY <= (60 / 2)) { return true; }
 
     let dx = distX - 40 / 2;
     let dy = distY - 60 / 2;
@@ -903,7 +902,7 @@ const lightning = (turn) => {
                 }
 
                 if (isDead(battlingKnightsP2[index])) {
-                    armyP2[index] = null;
+                    knightsP2[index] = null;
                     battlingKnightsP2[index] = null;
                 }
 
@@ -950,7 +949,7 @@ const lightning = (turn) => {
                 }
 
                 if (isDead(battlingKnightsP1[index])) {
-                    armyP1[index] = null;
+                    knightsP1[index] = null;
                     battlingKnightsP1[index] = null;
                 }
 
