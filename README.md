@@ -20,9 +20,7 @@ The game's controls are quite simple. Each player has 3 buttons:
 <img src="https://github.com/Joniba1/War-Game/blob/main/frontend/assets/buttons/lightning_button.png?raw=true" alt="Lightning" width="100">
 
 
-
-
-Note that lightning bolts won't stack, so might as well use them each round.
+Note that lightning bolts won't stack, so might as well use them all each round.
 
 ##
 
@@ -44,8 +42,8 @@ Type the following onto your terminal:
 - 'node index.js'
 
 ##
-![pic1](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePic1.png?raw=true)
+![pic1](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePng1.png?raw=true)
 ##
-![pic2](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePic2.png?raw=true)
-
- 
+![pic2](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePng2.png?raw=true)
+##
+![pic3](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePng3.png?raw=true)
