@@ -16,7 +16,7 @@ Note that lightning bolts won't stack, so might as well use them each round.
 
 Each player has indicators on each side of the screen, displaying their remaining troops of each type.
 The loser is the player who ran out of troops. 
-When a round ends, players can add their remaining troops to the battlefield. Click Battle! again to start the next round after you've added troops. 
+When a round ends, players can add their remaining forces to the battlefield. Click Battle! again to start the next round after you've added troops. 
 
 # Initialization instructions
 
