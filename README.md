@@ -24,7 +24,7 @@ Paste 'git clone <https://github.com/Joniba1/War-Game.git>' onto your cmd
 
 - [Node.js](https://nodejs.org/en)
 
-## VS code Terminal
+### VS code Terminal
 
 Type the following onto your terminal:
 - 'npm i express'
