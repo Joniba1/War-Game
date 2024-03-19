@@ -34,10 +34,12 @@ let rndY3 = Math.random() * (800 - 100) + 100;;
 
 let spacing = 100;
 
-let knights = 6; //swordsmen/knights
+//knights
+let knights = 6; 
 KnightsNumberP1.textContent = knights;
 KnightsNumberP2.textContent = knights;
 
+//wizards
 let wizards = 3;
 wizardsNumberP1.textContent = wizards;
 wizardsNumberP2.textContent = wizards;
@@ -50,15 +52,11 @@ let battlingKnightsP2 = [];
 let battlingWizardsP1 = [];
 let battlingWizardsP2 = [];
 
-
 let battleInProgress = false;
 let firstCharge = false; //first movement flag
 
 const starter = Math.round(Math.random() * 2);
 let attackerIndex = starter; //random starter
-
-let swordsmenAddedFlag = false;
-let wizardsAddedFlag = false;
 
 let fireFireball = false;
 let roundWinner = '';
@@ -279,7 +277,7 @@ const initializeArmies = () => {
 initializeArmies();
 
 const addKnight = (playerIndex) => {
-    swordsmenAddedFlag = true;
+    // swordsmenAddedFlag = true;
     if (playerIndex === 1 && !battleInProgress) {
         knight = knightsP1[battlingKnightsP1.length];
         knight.update(knight.position.x, knight.position.y);
@@ -309,7 +307,6 @@ const addKnight = (playerIndex) => {
 }
 
 const addWizard = (playerIndex) => {
-    wizardsAddedFlag = true;
     if (playerIndex === 1 && !battleInProgress) {
         wizard = wizardsArrayP1[battlingWizardsP1.length];
         wizard.update(wizard.position.x, wizard.position.y);
