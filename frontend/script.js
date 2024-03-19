@@ -725,6 +725,7 @@ const didBattleEnd = () => {
                 firstCharge = false;
                 roundWinner = '2';
                 battleInProgress = false;
+                boltsLeftP1 = 2;
             }
         } else if ((battlingKnightsP2.length === 0 || !battlingKnightsP2.some(knight => knight && knight.health > 0)) &&
             (battlingWizardsP2.length === 0 || !battlingWizardsP2.some(wizard => wizard && wizard.health > 0)) &&
@@ -739,6 +740,7 @@ const didBattleEnd = () => {
                 firstCharge = false;
                 roundWinner = '1';
                 battleInProgress = false;
+                boltsLeftP1 = 2;
             }
         }
     }

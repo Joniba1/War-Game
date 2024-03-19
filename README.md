@@ -10,16 +10,21 @@ The game's controls are quite simple. Each player has 3 buttons:
 - Add Wizard: adds a wizard to the battling forces.
 - Lightning: strikes the enemy forces with lightning bolts, 2 uses each round. 
 
+Note that lightning bolts won't stack, so might as well use them each round.
+
 ##
 
-Each player has indicators on each side of the screen, displaying the remaining troops of each type.
+Each player has indicators on each side of the screen, displaying their remaining troops of each type.
+The loser is the player who ran out of troops. 
+When a round ends, players can add their remaining troops to the battlefield. Click Battle! again to start the next round after you've added troops. 
 
-# Pre-Requirements
-
-- express: type 'npm i express' onto your terminal
-- [Node.js](https://nodejs.org/en)
+# Initialization instructions
 
 Paste 'git clone <https://github.com/Joniba1/War-Game.git>' onto your cmd 
+
+- [Node.js](https://nodejs.org/en)
+- express: type 'npm i express' onto your terminal
+
 
 ##
 ![pic1](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePic1.png?raw=true)
