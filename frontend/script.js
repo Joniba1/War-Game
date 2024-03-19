@@ -59,7 +59,6 @@ const starter = Math.round(Math.random() * 2);
 let attackerIndex = starter; //random starter
 
 let fireFireball = false;
-let roundWinner = '';
 
 //Background
 const background = new Sprite({
@@ -354,45 +353,27 @@ const battleFirstCharge = () => {
         }
     }
 
-    if (roundWinner === '2' || roundWinner === '') {
-        if (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing)
-            || battlingKnightsP1.length === 0 && battlingKnightsP2.length > 0 && battlingWizardsP1.length !== 0
-            && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing) ||
-            battlingKnightsP1.length === 0 && battlingKnightsP2.length === 0 && battlingWizardsP1.length > 0
-            && battlingWizardsP2.length > 0) {
-            firstCharge = true;
-            battlingKnightsP1.forEach(knight => {
-                if (knight) {
-                    knight.switchSprites('idle');
-                }
-            });
+    if (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing)
+        && (battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing) || battlingWizardsP2.length > 0)
+        || battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing)
+        && (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing) || battlingWizardsP1.length > 0)
+        || battlingWizardsP1.length > 0 && battlingWizardsP2.length > 0 && battlingKnightsP1.length === 0 && battlingKnightsP2.length === 0) {
 
-            battlingKnightsP2.forEach(knight => {
-                if (knight) {
-                    knight.switchSprites('idle');
-                }
-            });
-            attack();
-        }
+        console.log(`go`);
+        firstCharge = true;
+        battlingKnightsP1.forEach(knight => {
+            if (knight) {
+                knight.switchSprites('idle');
+            }
+        });
+
+        battlingKnightsP2.forEach(knight => {
+            if (knight) {
+                knight.switchSprites('idle');
+            }
+        });
+        attack();
     }
-    else if (roundWinner === '1') { // || roundWinner === ''
-        if (battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 975)) {
-            firstCharge = true;
-            battlingKnightsP1.forEach(knight => {
-                if (knight) {
-                    knight.switchSprites('idle');
-                }
-            });
-
-            battlingKnightsP2.forEach(knight => {
-                if (knight) {
-                    knight.switchSprites('idle');
-                }
-            });
-            attack();
-        }
-    }
-
 }
 
 const attack = () => {
@@ -734,9 +715,11 @@ const didBattleEnd = () => {
             }
             else { //only the round ended
                 firstCharge = false;
-                roundWinner = '2';
                 battleInProgress = false;
                 boltsLeftP1 = 2;
+                boltsLeftP2 = 2;
+                boltsNumberP1.textContent = boltsLeftP1;
+                boltsNumberP2.textContent = boltsLeftP2;
             }
         } else if ((battlingKnightsP2.length === 0 || !battlingKnightsP2.some(knight => knight && knight.health > 0)) &&
             (battlingWizardsP2.length === 0 || !battlingWizardsP2.some(wizard => wizard && wizard.health > 0)) &&
@@ -752,9 +735,11 @@ const didBattleEnd = () => {
                 return true;
             } else { //only the round ended
                 firstCharge = false;
-                roundWinner = '1';
                 battleInProgress = false;
+                boltsLeftP1 = 2;
                 boltsLeftP2 = 2;
+                boltsNumberP1.textContent = boltsLeftP1;
+                boltsNumberP2.textContent = boltsLeftP2;
             }
         }
     }
@@ -903,7 +888,6 @@ const lightning = (turn) => {
         if (index >= 0) {
             if (type === 'knight') {
                 if (battlingKnightsP2[index]) {
-
                     lightningBoltP1.position.x = battlingKnightsP2[index].position.x - 10;
                     lightningBoltP1.position.y = battlingKnightsP2[index].position.y - 360;
                 }
