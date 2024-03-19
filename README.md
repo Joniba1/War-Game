@@ -23,8 +23,13 @@ When a round ends, players can add their remaining troops to the battlefield. Cl
 Paste 'git clone <https://github.com/Joniba1/War-Game.git>' onto your cmd 
 
 - [Node.js](https://nodejs.org/en)
-- express: type 'npm i express' onto your terminal
 
+## VS code Terminal
+
+Type the following onto your terminal:
+- 'npm i express'
+- 'cd backend'
+- node index.js
 
 ##
 ![pic1](https://github.com/Joniba1/War-Game/blob/main/frontend/assets/imgs/gamePic1.png?raw=true)
