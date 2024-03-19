@@ -19,6 +19,10 @@ The game's controls are quite simple. Each player has 3 buttons:
 
 <img src="https://github.com/Joniba1/War-Game/blob/main/frontend/assets/buttons/lightning_button.png?raw=true" alt="Lightning" width="100">
 
+Once both players haev decided which troops they'd like to deploy, click the Battle button to start the war.
+
+<img src="https://github.com/Joniba1/War-Game/blob/main/frontend/assets/buttons/battle_button.png?raw=true" alt="Battle" width="100">
+
 
 Note that lightning bolts won't stack, so might as well use them all each round.
 
