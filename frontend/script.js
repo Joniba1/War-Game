@@ -357,8 +357,9 @@ const battleFirstCharge = () => {
     if (roundWinner === '2' || roundWinner === '') {
         if (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing)
             || battlingKnightsP1.length === 0 && battlingKnightsP2.length > 0 && battlingWizardsP1.length !== 0
-            && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing) || 
-            battlingKnightsP1.length === 0 && battlingKnightsP2.length === 0 && battlingWizardsP1.length > 0 && battlingWizardsP2.length > 0) {
+            && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing) ||
+            battlingKnightsP1.length === 0 && battlingKnightsP2.length === 0 && battlingWizardsP1.length > 0
+            && battlingWizardsP2.length > 0) {
             firstCharge = true;
             battlingKnightsP1.forEach(knight => {
                 if (knight) {
