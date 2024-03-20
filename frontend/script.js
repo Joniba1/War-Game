@@ -348,11 +348,13 @@ const battleFirstCharge = () => {
         }
     }
 
+
     if (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing)
-        && battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing) || battlingKnightsP2.length === 0 && battlingWizardsP2.length > 0
+        && battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing)
+        || battlingKnightsP1.length > 0 && (battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing && battlingWizardsP2.length > 0))
         || battlingKnightsP2.length > 0 && battlingKnightsP2.some(knight => knight && knight.position.x === 910 + spacing)
-        && (battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing) || battlingKnightsP1.length === 0 && battlingWizardsP1.length > 0)
-        || battlingWizardsP1.length > 0 && battlingWizardsP2.length > 0 && battlingKnightsP1.length === 0 && battlingKnightsP2.length === 0) {
+        && battlingKnightsP1.length > 0 && battlingKnightsP1.some(knight => knight && knight.position.x === 910 - spacing) && battlingWizardsP1.length > 0
+        || battlingWizardsP1.length > 0 && battlingWizardsP2.length > 0 && !battlingKnightsP2.some(knight => knight) && !battlingKnightsP1.some(knight => knight)) {
 
         console.log(`go`);
         firstCharge = true;
@@ -544,6 +546,7 @@ const reArrangeKnights = (battlingKnightsP1, battlingKnightsP2) => {
         }
     }
 
+    console.log(firstCharge);
     // Check if there are idle knights from both armies
     if (battleInProgress && idleKnightsP1.length > 0 && idleKnightsP2.length > 0) {
         console.log(`Knights need to be moved`);
